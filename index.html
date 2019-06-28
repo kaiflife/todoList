@@ -18,6 +18,7 @@
 </head>
 
 <body>
+    <p></p>
   <div id="header-id" class="header">
     <h2>My To Do List</h2>
     <input type="text" id="text-input" placeholder="Title..." name="task">
@@ -25,12 +26,13 @@
   </div>
 
   <ul id="list">
-    <li>Hit the gym</li>
-    <li class="checked">Pay bills</li>
-    <li>Meet George</li>
-    <li>Buy eggs</li>
-    <li>Read a book</li>
-    <li>Organize office</li>
+      <li>First item
+          <a href='#' class='close' aria-hidden='true'>&times</a>
+      </li>
+
+      <li>Second item
+          <a href='#' class='close' aria-hidden='true'>&times</a>
+      </li>
   </ul>
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

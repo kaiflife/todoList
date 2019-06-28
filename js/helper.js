@@ -12,3 +12,11 @@ const inputCheck = function() {
         return false;
     }
 }
+
+const clickedElement = function {
+    $( "*", document.body ).click(function( event ) {
+        // event.stopPropagation();
+        var domElement = $( this ).get( 0 );
+        $( "p:first" ).text( "Clicked on - " + domElement.nodeName );
+    });
+}
