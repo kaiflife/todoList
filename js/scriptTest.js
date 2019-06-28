@@ -1,5 +1,4 @@
 
-// BUG#1 if use button-add then keycode ENTER 2 items was edded
 
 // Add button append li and <a>. <a> mean close list
 $(document).ready(function () {
@@ -12,16 +11,29 @@ $(document).ready(function () {
     $(this).closest('li')
       .remove();
   });
-});
 
-$('li').click(function(){
 
-  alert($(this).hasClass('checked'));
-  if ($(this).hasClass('checked')) {
-    $(this).removeClass('checked');
-  } else {
-    $(this).addClass('checked');
+  // Another way to check for class in element
+  // if($(this).hasClass('two'))
+  $("li").click(function(){
+
+    if ($(this).hasClass('checked')) {
+      $(this).removeClass('checked');
+    } else {
+      $(this).addClass('checked');
+    }
+  });
+
+
+  if($(document).on('click', 'li :not([class=checked])')){
+    alert('click on checked li');
   }
+  else {
+    alert("doesnt work");
+  }
+
+
+
 });
 
 const inputCheck = function() {

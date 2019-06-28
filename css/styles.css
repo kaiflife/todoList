@@ -97,7 +97,7 @@ input {
 
 /* Style the "Add" button */
 .button-add {
-    padding: 8px;
+
     width: 25%;
     color: #555;
     float: left;
@@ -106,6 +106,10 @@ input {
     cursor: pointer;
     transition: 0.3s;
     border-radius: 0;
+
+    background: darkgray;
+    border: none;
+    padding: 10px;
 }
 }
 
