@@ -12,34 +12,11 @@ $(document).ready(function () {
       .remove();
   });
 
-
-  // Another way to check for class in element
-  // if($(this).hasClass('two'))
-  $("li").click(function(){
-
-      // Its work!
-      // alert('hello');
-
-    if($(this).hasClass('checked')){
-        
-      $(this).addClass('checked');
-      //another way
-      // $('li').addClass("checked");
-    }
-    else {
-        $(this).removeClass('Checked');
-    }
-  });
-
-
-  if($(document).on('click', 'li :not([class=checked])')){
+  if($(document).on('click', 'li :not(.checked)')){
     alert('click on checked li');
   }
-  else {
-      alert("doesnt work");
-  }
 
-  /*\
+  /*
    *This work code!!
    * This code append class to unchecked item of list
    * if we click on them
@@ -58,7 +35,7 @@ const inputCheck = function() {
     .replace(/\s*$/, '') !== '') {
     return true;
   } else {
-      return false;
+    return false;
   }
 }
 
