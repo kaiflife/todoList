@@ -1,5 +1,4 @@
 
-// BUG#1 if use button-add then keycode ENTER 2 items was edded
 
 // Add button append li and <a>. <a> mean close list
 $(document).ready(function () {
@@ -14,15 +13,18 @@ $(document).ready(function () {
   });
 });
 
-$('li').click(function(){
+    // Need find clicked element!!!
 
-  alert($(this).hasClass('checked'));
-  if ($(this).hasClass('checked')) {
-    $(this).removeClass('checked');
-  } else {
-    $(this).addClass('checked');
-  }
-});
+  $("li").click(function(){
+
+    if($(this).hasClass('checked')){
+      $(this).removeClass('checked');
+    }
+    else {
+      $(this).addClass('checked');
+    }
+  });
+
 
 const inputCheck = function() {
   if ($('#text-input').val().replace(/^\s*/, '')
@@ -31,7 +33,7 @@ const inputCheck = function() {
   } else {
     return false;
   }
-}
+};
 
 
 //  Append li to ul with with ENTER button
@@ -42,9 +44,11 @@ $(document).keypress(event => {
   if (keycode === 13) {
 
     // if input not epmty
-    if(inputCheck()) {
+    if(inputCheck())
+    {
       $('#list').append("<li>" + $("#text-input[name=task]").val() + ' <a href=\'#\' ' +
         "class='close' aria-hidden='true'>&times;</a></li>");
     }
+
   }
 });

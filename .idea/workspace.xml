@@ -2,6 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="225575b4-0d42-4167-816a-3177534271b8" name="Default Changelist" comment="">
+<<<<<<< HEAD
+=======
+      <change afterPath="$PROJECT_DIR$/js/scriptTest.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/helper.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/helper.js" afterDir="false" />
+>>>>>>> c49568670ccaf412e3d464d3d8d804ebb5d573f8
       <change beforePath="$PROJECT_DIR$/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/script.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -36,8 +43,13 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/script.js">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="240">
               <caret line="16" column="2" selection-start-line="16" selection-start-column="2" selection-end-line="16" selection-end-column="2" />
+=======
+            <state relative-caret-position="300">
+              <caret line="23" column="8" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="8" />
+>>>>>>> c49568670ccaf412e3d464d3d8d804ebb5d573f8
               <folding>
                 <element signature="e#56#63#1" expanded="true" />
                 <element signature="e#52#59#1" expanded="true" />
@@ -47,6 +59,7 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/js/BUGS.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="90">
@@ -60,6 +73,12 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="279">
               <caret line="35" lean-forward="true" selection-end-line="62" />
+=======
+        <entry file="file://$PROJECT_DIR$/js/scriptTest.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1089">
+              <caret line="88" selection-start-line="88" selection-end-line="88" />
+>>>>>>> c49568670ccaf412e3d464d3d8d804ebb5d573f8
               <folding>
                 <element signature="e#56#63#1" expanded="true" />
                 <element signature="e#52#59#1" expanded="true" />
@@ -113,10 +132,15 @@
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/.eslintrc.json" />
         <option value="$PROJECT_DIR$/js/helper.js" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/css/styles.css" />
         <option value="$PROJECT_DIR$/js/scriptTest.js" />
         <option value="$PROJECT_DIR$/js/BUGS.js" />
         <option value="$PROJECT_DIR$/js/BUGS.txt" />
+=======
+        <option value="$PROJECT_DIR$/js/scriptTest.js" />
+        <option value="$PROJECT_DIR$/css/styles.css" />
+>>>>>>> c49568670ccaf412e3d464d3d8d804ebb5d573f8
         <option value="$PROJECT_DIR$/js/script.js" />
       </list>
     </option>
@@ -217,23 +241,35 @@
       <workItem from="1561627286173" duration="927000" />
       <workItem from="1561628598968" duration="11297000" />
       <workItem from="1561708372626" duration="16000" />
+<<<<<<< HEAD
       <workItem from="1561708488659" duration="10129000" />
+=======
+      <workItem from="1561708488659" duration="7666000" />
+>>>>>>> c49568670ccaf412e3d464d3d8d804ebb5d573f8
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="23688000" />
+=======
+    <option name="totallyTimeSpent" value="21225000" />
+>>>>>>> c49568670ccaf412e3d464d3d8d804ebb5d573f8
   </component>
   <component name="ToolWindowManager">
     <frame x="243" y="55" width="1400" height="999" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24981844" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24981844" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
+<<<<<<< HEAD
       <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32924107" />
+=======
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32924107" />
+>>>>>>> c49568670ccaf412e3d464d3d8d804ebb5d573f8
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -264,6 +300,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
           <caret line="33" column="7" lean-forward="true" selection-start-line="33" selection-start-column="7" selection-end-line="33" selection-end-column="7" />
+<<<<<<< HEAD
+=======
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/styles.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="429">
+          <caret line="115" column="19" lean-forward="true" selection-start-line="115" selection-start-column="19" selection-end-line="115" selection-end-column="19" />
+>>>>>>> c49568670ccaf412e3d464d3d8d804ebb5d573f8
         </state>
       </provider>
     </entry>
@@ -276,8 +322,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/scriptTest.js">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="279">
           <caret line="35" lean-forward="true" selection-end-line="62" />
+=======
+        <state relative-caret-position="1089">
+          <caret line="88" selection-start-line="88" selection-end-line="88" />
+>>>>>>> c49568670ccaf412e3d464d3d8d804ebb5d573f8
           <folding>
             <element signature="e#56#63#1" expanded="true" />
             <element signature="e#52#59#1" expanded="true" />
@@ -285,6 +336,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/js/BUGS.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -303,6 +355,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="16" column="2" selection-start-line="16" selection-start-column="2" selection-end-line="16" selection-end-column="2" />
+=======
+    <entry file="file://$PROJECT_DIR$/js/script.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="23" column="8" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="8" />
+>>>>>>> c49568670ccaf412e3d464d3d8d804ebb5d573f8
           <folding>
             <element signature="e#56#63#1" expanded="true" />
             <element signature="e#52#59#1" expanded="true" />
