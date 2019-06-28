@@ -4,4 +4,4 @@
     - if use button-add then keycode ENTER 2 items was edded
 
     BUG#2
-    - new items didnt add class='checked'
+    - cant click li, click ul

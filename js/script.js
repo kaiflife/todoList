@@ -6,8 +6,6 @@ $(document).ready(() => {
     if (inputCheck()) {
       $('#list').append(`<li>${$('#text-input[name=task]').val()} <a href='#' `
         + `class='close' aria-hidden='true'>&times;</a></li>`);
-
-
     }
   });
   $('body').on('click', '#list a', function() {
@@ -16,9 +14,9 @@ $(document).ready(() => {
   });
 });
 
-
 // When item clicked add class checked when ucnehcked
 // when item unchecked and clicked remove from item class checked
+
 $('li').click(function() {
   if ($(this).hasClass('checked')) {
     $(this).removeClass('checked');

@@ -14,6 +14,7 @@ $(document).ready(() => {
   });
 });
 
+<<<<<<< HEAD
 
 // When item clicked add class checked when ucnehcked
 // when item unchecked and clicked remove from item class checked
@@ -23,6 +24,30 @@ $('li').click(function() {
   } else {
     $(this).addClass('checked');
   }
+=======
+
+  // Another way to check for class in element
+  // if($(this).hasClass('two'))
+  $("li").click(function(){
+
+    if ($(this).hasClass('checked')) {
+      $(this).removeClass('checked');
+    } else {
+      $(this).addClass('checked');
+    }
+  });
+
+
+  if($(document).on('click', 'li :not([class=checked])')){
+    alert('click on checked li');
+  }
+  else {
+    alert("doesnt work");
+  }
+
+
+
+>>>>>>> f1b8cd819391735e7a0b86bd490580d997e83910
 });
 
 
@@ -42,6 +67,7 @@ $(document).keypress(event => {
   const keycode = event.keyCode ? event.keyCode : event.which;
 
   // Enter pressed
+<<<<<<< HEAD
   if (keycode === 13) {
 
     // If input not epmty
@@ -51,3 +77,16 @@ $(document).keypress(event => {
     }
   }
 });
+=======
+
+  if (keycode === 13) {
+
+    // if input not epmty
+    if(inputCheck()) {
+      $('#list').append("<li>" + $("#text-input[name=task]").val() + ' <a href=\'#\' ' +
+        "class='close' aria-hidden='true'>&times;</a></li>");
+    }
+  }
+});
+
+>>>>>>> f1b8cd819391735e7a0b86bd490580d997e83910
