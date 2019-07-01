@@ -18,70 +18,81 @@ const render = function() {
 
   //render pagination
   $('.pagination').remove();
-  $('body').append(`<div class="pagination"></div>`);
+  $('body').append($(`<div class="pagination"></div>`));
   let pageCount = Math.ceil(items.length / pageItems);
+
+
   makeToDo();
 
   pagination(pageCount);
-
-
-}
+};
 
 const pagination = function(pageCount) {
-
-
   for (i = 0; i < pageCount; i++) {
-    $('.pagination').append(`<button class="page-number">i+1</button>`);
+    $('.pagination').append(`<button id='thisButton' class="page-number">${i+1}</button>`);
   }
-}
+};
 
 const makeToDo = function() {
 
-  if(items.length <= pageNumber*pageItems){
+  if(items.length >= pageNumber*pageItems){
     let i = (pageNumber-1)*5;
-    for (i=0; i < pageNumber*pageItems; i++) {
+    for (i; i < pageNumber*pageItems; i++) {
       appendLi(items[i].name,items[i].id,items[i].checked,items[i].editing);
     }
   }
   else {
-    let i = pageNumber*pageItems;
+    let i = (pageNumber-1)*pageItems;
     for(i; i < items.length; i++){
       appendLi(items[i].name,items[i].id,items[i].checked,items[i].editing);
     }
   }
-}
+};
 
+const choosePage = function() {
+  $("#thisButton").on("click", function(){
+    alert('kewr');
+    pageNumber = $(this).val();
+    render();
+  });
+};
 
 // if click on cross , remove element from toDo List
 const removeItem = function () {
   $('body')
     .on('click', '#list a', function() {
-      let index = items.findIndex(item => item.name === $(this)
-        .val());
-      items.splice(index+1,1);// remove 1 element in array
+      let id = ($(this).parent().attr('id'));
+
+      //TRY METHOF FIND
+      const index = items.findIndex(item => item.name === id);
+
+      alert(index);
+      items.splice(index,1);// remove 1 element in array
 
       render();
     });
-}
+};
 
 const idGener = function() {
   let randId = Math.random();
   while (!(idList.findIndex(item => item.name === randId))) {
     randId = Math.random();
   }
+  idList.push(randId);
+
   return randId;
 
-}
+};
 
 
 const addItemProperty = function(name,id=idGener()) {
-  items.push({
+  items.unshift({
     name: name,
     id: id,
     checked: false,
     editing: false
   });
-}
+};
 
 // Add items to array
 const addItem = function() {
@@ -109,7 +120,7 @@ const addItem = function() {
       }
     }
   });
-}
+};
 
 const checkAllItems = function () {
   $(document)
@@ -120,16 +131,16 @@ const checkAllItems = function () {
         checkAll(false);
       }
     });
-}
+};
 
 
 // append to ul new li
 const appendLi = function (name,id,checked,editing) {
   $('#list')
-    .append(`<li id=${id} class="${'.'+ checked + ' .' + editing}">${name} <a href='#' `
-      + `class='close' aria-hidden='true'>&times;</a></li>`);
+    .append($(`<li id=${id} class="${'.'+ checked + ' .' + editing}">${name} <a href='#' `
+      + `class='close' aria-hidden='true'>&times;</a></li>`));
   return true;
-}
+};
 
 // checked unchecked one item
 const checkItem = function() {
@@ -143,7 +154,7 @@ const checkItem = function() {
       items[indexItem].checked = 'checked';
     }
     });
-}
+};
 
 // find unchecked li
 const checkItems = function () {
@@ -161,7 +172,7 @@ const checkItems = function () {
   });
 
   return unchecked; // every class='checked'
-}
+};
 
 // check elements
 const checkAll = function (check) {
@@ -176,7 +187,7 @@ const checkAll = function (check) {
     });
   }
   return true;
-}
+};
 
 
 
@@ -190,7 +201,7 @@ const addRemoveClass = function(className) {
       $(this).addClass(className);
     }
   });
-}
+};
 
 
 
@@ -207,4 +218,6 @@ const inputCheck = function() {
 checkAllItems();
 removeItem();
 addItem();
+choosePage();
+
 

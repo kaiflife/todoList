@@ -149,6 +149,8 @@ input {
     transition: 0.3s;
     border-radius: 0;
     margin-top: 2em;
+    margin-left: 1em;
+    margin-right: 1em;
 
 
     background: darkgray;
