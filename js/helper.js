@@ -13,6 +13,7 @@ const inputCheck = function() {
     }
 }
 
+// Mouse clicked element
 const clickedElement = function {
     $( "*", document.body ).click(function( event ) {
         // event.stopPropagation();
@@ -20,3 +21,32 @@ const clickedElement = function {
         $( "p:first" ).text( "Clicked on - " + domElement.nodeName );
     });
 }
+
+
+// work with each element
+let eachElement = function () {
+    $('ul li').each(function(i)
+    {
+        if($(this).hasClass('checked')) {}
+            else {
+               return false;
+        }
+    });
+}
+
+// add or remove class to element
+let checkAll = function (check) {
+    if(check){
+        $('ul li').each(function(i) {
+            $(this).addClass('checked');
+        });
+    }
+    else {
+        $('ul li').each(function(i) {
+            $(this).removeClass('checked');
+        });
+    }
+    return true;
+}
+
+

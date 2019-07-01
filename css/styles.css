@@ -19,10 +19,10 @@ ul li {
     transition: 0.2s;
 
     /* make the list items unselectable */
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    /*-webkit-user-select: none;*/
+    /*-moz-user-select: none;*/
+    /*-ms-user-select: none;*/
+    /*user-select: none;*/
 }
 
 /* Set all odd list items to a different color (zebra-stripes) */
@@ -111,6 +111,22 @@ input {
     border: none;
     padding: 10px;
 }
+
+.button-checkAll {
+    width: 25%;
+    color: #555;
+    float: left;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 0;
+    margin-top: 2em;
+
+
+    background: darkgray;
+    border: none;
+    padding: 10px;
 }
 
 .button-add:hover {
