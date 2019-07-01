@@ -1,40 +1,65 @@
 
 let items = [];
+let item = {
+  id: Math.random(),
+  checked:false,
+  name: '',
+  editing: false
+}
+let idList = [];
+
 let pageNumber = 1;
 let pageItems = 5;
 
-let render = function() {
+const render = function() {
   alert('qwe');
   let pageCount = 1; // Math.ceil(items.length / pageItems);
+
   for (i = 0; i < pageCount; i++) {
-    $('.pagination').append(i+1,`<button class="page-number">i+1</button>`);
+    $('.pagination').append(`<button class="page-number">i+1</button>`);
   }
 
-  checkButton();
-  removeButton();
-  addButton();
+  for (i=0; i < pageItems; i++) {
+    appendLi(name,id,checked,editing);
+  }
 }
 
-
 // if click on cross , remove element from toDo List
-let removeButton = function () {
+const removeItem = function () {
   $('body')
     .on('click', '#list a', function() {
-      let index = Data.findIndex(item => item.name === $(this)
+      let index = items.findIndex(item => item.name === $(this)
         .val());
       items.splice(index, 1);// remove 1 element in array
     });
+  return render();
 }
 
-// Add items in toDo List
-let addButton = function() {
+const idGener = function() {
+  let randId = Math.random();
+  while (!(idList.findIndex(item => item.name === randId))) {
+    randId = Math.random();
+  }
+  return randId;
+}
+
+const addItemProperty = function(name,id=idGener()) {
+  items.push({
+    name: name,
+    id: id,
+    checked: false,
+    editing: false
+  });
+}
+
+// Add items to array
+const addItem = function() {
 
   // append item when click button-add
   $(document)
     .on('click', '.button-add', () => {
       if (inputCheck()) {
-        items.push($('#text-input[name=task]')
-          .val());
+        addItemProperty($('#text-input[name=task]').val())
       }
     });
 
@@ -47,13 +72,15 @@ let addButton = function() {
 
       // If input not empty
       if (inputCheck()) {
-        items.push($('#text-input[name=task]').val());
+        addItemProperty($('#text-input[name=task]').val())
       }
     }
   });
+  return render();
+
 }
 
-let checkButton = function () {
+const checkAllItems = function () {
   $(document)
     .on('click', '.button-checkAll', () => {
       if (checkItems()) {
@@ -66,17 +93,29 @@ let checkButton = function () {
 
 
 // append to ul new li
-let appendLi = function () {
+const appendLi = function (name,id,checked,editing) {
   $('#list')
-    .append(`<li>${$('#text-input[name=task]')
-        .val()} <a href='#' ` // `class='close' ' for <li>
+    .append(`<li id=${id} class="${'.'+ checked + ' .' + editing}">${name} <a href='#' `
       + `class='close' aria-hidden='true'>&times;</a></li>`);
   return true;
 }
 
+// checked unchecked one item
+const checkItem = function() {
+  $(li).click(function() {
+    let id = $(this).id;
+    let indexItem = items.findIndex(item => item.name.id === id); // find index of item by id
+    if(indexItem.checked === 'checked'){
+      items[indexItem].checked = '';
+    }
+    else {
+      items[indexItem].checked = 'checked';
+    }
+    });
+}
 
 // find unchecked li
-let checkItems = function () {
+const checkItems = function () {
   let unchecked;
   $('ul li').each(function(i)
   {
@@ -94,7 +133,7 @@ let checkItems = function () {
 }
 
 // check elements
-let checkAll = function (check) {
+const checkAll = function (check) {
   if(check){
     $('ul li').each(function(i) {
       $(this).addClass('checked');
@@ -111,9 +150,8 @@ let checkAll = function (check) {
 
 
 
-// Need find clicked element!!!
-// addClass('checked');
-let addClass = function(className) {
+// addRemoveClass('checked');
+const addRemoveClass = function(className) {
   $('li').click(function() {
     if ($(this).hasClass(className)) {
       $(this).removeClass(className);
@@ -135,20 +173,7 @@ const inputCheck = function() {
   return false;
 };
 
-
-
-
-// $(document).ready(() => {
-//   Object.observe(items,function() {
-//     render();
-//   });
-// });
-
-
-$(document).ready(() => {
-  $(document).change(items,function() {
-    render();
-  });
-});
-
+checkAllItems();
+removeItem();
+addItem();
 

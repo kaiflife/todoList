@@ -59,3 +59,14 @@ let checkAll = function (check) {
 
 // find index by name
 const index = Data.findIndex(item => item.name === 'John');
+
+// addClass('checked');
+let addClass = function(className) {
+    $('li').click(function() {
+        if ($(this).hasClass(className)) {
+            $(this).removeClass(className);
+        } else {
+            $(this).addClass(className);
+        }
+    });
+}
