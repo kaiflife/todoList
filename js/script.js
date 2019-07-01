@@ -12,22 +12,31 @@ let pageNumber = 1;
 let pageItems = 5;
 
 const render = function() {
-  alert('qwe');
+  //render ul
+  $('#list').remove();
+  $('body').append(`<ul id='list'></ul>`);
 
+  //render pagination
+  $('.pagination').remove();
+  $('body').append(`<div class="pagination"></div>`);
   let pageCount = Math.ceil(items.length / pageItems);
+  makeToDo();
 
   pagination(pageCount);
-  makeToDo();
+
 
 }
 
 const pagination = function(pageCount) {
+
+
   for (i = 0; i < pageCount; i++) {
     $('.pagination').append(`<button class="page-number">i+1</button>`);
   }
 }
 
 const makeToDo = function() {
+
   if(items.length <= pageNumber*pageItems){
     let i = (pageNumber-1)*5;
     for (i=0; i < pageNumber*pageItems; i++) {
@@ -35,7 +44,7 @@ const makeToDo = function() {
     }
   }
   else {
-    let i = pageNumber*pageItems
+    let i = pageNumber*pageItems;
     for(i; i < items.length; i++){
       appendLi(items[i].name,items[i].id,items[i].checked,items[i].editing);
     }
@@ -49,9 +58,10 @@ const removeItem = function () {
     .on('click', '#list a', function() {
       let index = items.findIndex(item => item.name === $(this)
         .val());
-      items.splice(index, 1);// remove 1 element in array
+      items.splice(index+1,1);// remove 1 element in array
+
+      render();
     });
-  return render();
 }
 
 const idGener = function() {
@@ -61,15 +71,6 @@ const idGener = function() {
   }
   return randId;
 
-}
-
-const addItemProperty = function(name,id=idGener()) {
-  items.push({
-    name: name,
-    id: id,
-    checked: false,
-    editing: false
-  });
 }
 
 
@@ -89,7 +90,8 @@ const addItem = function() {
   $(document)
     .on('click', '.button-add', () => {
       if (inputCheck()) {
-        addItemProperty($('#text-input[name=task]').val())
+        addItemProperty($('#text-input[name=task]').val());
+        render();
       }
     });
 
@@ -102,12 +104,11 @@ const addItem = function() {
 
       // If input not empty
       if (inputCheck()) {
-        addItemProperty($('#text-input[name=task]').val())
+        addItemProperty($('#text-input[name=task]').val());
+        render();
       }
     }
   });
-  return render();
-
 }
 
 const checkAllItems = function () {
