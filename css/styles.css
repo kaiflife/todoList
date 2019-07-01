@@ -132,3 +132,30 @@ input {
 .button-add:hover {
     background-color: #bbb;
 }
+
+.pagination{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.page-number {
+    width: 10%;
+    color: #555;
+    float: left;
+    text-align: center;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 0;
+    margin-top: 2em;
+
+
+    background: darkgray;
+    border: none;
+    padding: 10px;
+}
+
+.active-page{
+    background-color: deepskyblue;
+}

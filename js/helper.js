@@ -1,6 +1,14 @@
 // check input from user.  .val() take value input
 alert($('#text-input').val());
 
+// append to ul new li
+let appendLi = function () {
+    $('#list')
+      .append(`<li>${$('#text-input[name=task]')
+          .val()} <a href='#' ` // `class='close' ' for <li>
+        + `class='close' aria-hidden='true'>&times;</a></li>`);
+    return true;
+}
 
 // check input from user
 // $('indexInput').val() -> .val() func get input value
@@ -49,4 +57,5 @@ let checkAll = function (check) {
     return true;
 }
 
-
+// find index by name
+const index = Data.findIndex(item => item.name === 'John');
