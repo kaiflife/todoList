@@ -1,3 +1,9 @@
+
+
+
+// This is helpful JS file
+// This file contain a lot of various functions
+
 // check input from user.  .val() take value input
 alert($('#text-input').val());
 
@@ -59,3 +65,14 @@ let checkAll = function (check) {
 
 // find index by name
 const index = Data.findIndex(item => item.name === 'John');
+
+// addClass('checked');
+let addClass = function(className) {
+    $('li').click(function() {
+        if ($(this).hasClass(className)) {
+            $(this).removeClass(className);
+        } else {
+            $(this).addClass(className);
+        }
+    });
+}
