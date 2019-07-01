@@ -13,6 +13,7 @@ let pageItems = 5;
 
 const render = function() {
   alert('qwe');
+
   let pageCount = Math.ceil(items.length / pageItems);
 
   pagination(pageCount);
@@ -41,6 +42,7 @@ const makeToDo = function() {
   }
 }
 
+
 // if click on cross , remove element from toDo List
 const removeItem = function () {
   $('body')
@@ -58,7 +60,18 @@ const idGener = function() {
     randId = Math.random();
   }
   return randId;
+
 }
+
+const addItemProperty = function(name,id=idGener()) {
+  items.push({
+    name: name,
+    id: id,
+    checked: false,
+    editing: false
+  });
+}
+
 
 const addItemProperty = function(name,id=idGener()) {
   items.push({

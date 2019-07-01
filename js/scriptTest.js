@@ -13,16 +13,35 @@ let pageItems = 5;
 
 const render = function() {
   alert('qwe');
-  let pageCount = 1; // Math.ceil(items.length / pageItems);
 
+  let pageCount = Math.ceil(items.length / pageItems);
+
+  pagination(pageCount);
+  makeToDo();
+
+}
+
+const pagination = function(pageCount) {
   for (i = 0; i < pageCount; i++) {
     $('.pagination').append(`<button class="page-number">i+1</button>`);
   }
+}
 
-  for (i=0; i < pageItems; i++) {
-    appendLi(name,id,checked,editing);
+const makeToDo = function() {
+  if(items.length <= pageNumber*pageItems){
+    let i = (pageNumber-1)*5;
+    for (i=0; i < pageNumber*pageItems; i++) {
+      appendLi(items[i].name,items[i].id,items[i].checked,items[i].editing);
+    }
+  }
+  else {
+    let i = pageNumber*pageItems
+    for(i; i < items.length; i++){
+      appendLi(items[i].name,items[i].id,items[i].checked,items[i].editing);
+    }
   }
 }
+
 
 // if click on cross , remove element from toDo List
 const removeItem = function () {
@@ -41,7 +60,18 @@ const idGener = function() {
     randId = Math.random();
   }
   return randId;
+
 }
+
+const addItemProperty = function(name,id=idGener()) {
+  items.push({
+    name: name,
+    id: id,
+    checked: false,
+    editing: false
+  });
+}
+
 
 const addItemProperty = function(name,id=idGener()) {
   items.push({
