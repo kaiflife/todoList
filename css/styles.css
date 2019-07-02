@@ -112,21 +112,22 @@ input {
     padding: 10px;
 }
 
-.button-checkAll {
-    width: 25%;
-    color: #555;
+.checkAll {
+    width: 13%;
+
     float: left;
     text-align: center;
     font-size: 16px;
     cursor: pointer;
-    transition: 0.3s;
-    border-radius: 0;
+
     margin-top: 2em;
-
-
     background: darkgray;
-    border: none;
+
     padding: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .button-add:hover {

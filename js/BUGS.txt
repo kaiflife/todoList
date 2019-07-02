@@ -1,7 +1,2 @@
-
-
-    BUG#1
-    - if use button-add then keycode ENTER 2 items was edded
-
-    BUG#2
-    - cant click li, click ul
+    When add new element checkbox is checked
+    need clear unchecked

@@ -66,4 +66,14 @@ let addClass = function(className) {
             $(this).addClass(className);
         }
     });
-}
+};
+
+
+
+const findIndex = function(arr,name) {
+    for(i=0;i<arr.length;i++) {
+        if(arr[i]===name){
+            return i;
+        }
+    }
+};
