@@ -145,26 +145,36 @@ const checkAllItems = function () {
 // append to ul new li
 const appendLi = function (name,id,checked,editing) {
   $('#list')
-    .append($(`<li id=${id} class="${checked + ' ' + editing}">${name} <a href='#' `
+    .append($(`<li id=${id} class="${checked + ' ' + editing + ' item'}">${name} <a href='#' `
       + `class='close' aria-hidden='true'>&times;</a></li>`));
   return true;
 };
 
-// checked unchecked one item
-const checkItem = function() {
-  $(li).click(function() {
 
-    let id = Number($(this).attr('id'));
-    let index = findIndex(idList, id);
 
-    if(items[index].checked === 'checked'){
-      items[indexItem].checked = '';
-    }
-    else {
-      items[index].checked = 'checked';
-    }
+let checkItem = function () {
+  $('body')
+    .click(function(e) {
+
+      let target = $(e.target);
+
+      if(target[0].tagName === 'LI'){
+        let id = Number(target[0].id);
+
+        let index = findIndex(idList, id);
+
+        if (items[index].checked === 'checked') {
+          items[index].checked = '';
+        } else {
+          items[index].checked = 'checked';
+        }
+        render();
+      }
+
+
     });
 };
+
 
 // find unchecked li
 const checkItems = function () {
@@ -232,6 +242,7 @@ const inputCheck = function() {
   return false;
 };
 
+checkItem();
 checkAllItems();
 removeItem();
 addItem();

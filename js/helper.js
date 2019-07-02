@@ -77,3 +77,13 @@ const findIndex = function(arr,name) {
         }
     }
 };
+
+
+let clickedElement = function () {
+    $('body').click(function(e) {
+
+        let target = $(e.target),
+          article;
+        console.log(target[0].id); // print clicked element
+    });
+};
