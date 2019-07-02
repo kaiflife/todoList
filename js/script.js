@@ -14,13 +14,13 @@ const render = function() {
   //clear pagination
   $('.pagination').empty()
 
-  let pageCount = Math.ceil(items.length / pageItems);
+  let pageCount = Math.ceil((items.length - blockedItems())/pageItems);
 
   pageNumber>pageCount && pageCount > 0 ? pageNumber=pageCount : true;
 
-
   makeToDo();
 
+  console.log(items[0]);
 
   pagination(pageCount);
 };
@@ -31,23 +31,27 @@ const pagination = function(pageCount) {
   }
 };
 
-const makeToDo = function() {
-
-  if(items.length >= pageNumber*pageItems){
-    let i = (pageNumber-1)*5;
-
-    for (i; i < pageNumber*pageItems; i++) {
-
-      if(!items[i].blocked) appendLi(items[i].name,items[i].id,items[i].checked,items[i].editing);
-
+const visiblePages = function () {
+  let pages = [];
+  let counter = 0;
+  let i = (pageNumber-1) * pageItems;
+  for(i; i < items.length; i++){
+    if(counter === pageItems){
+      return pages;
+    }
+    if(!items[i].blocked){
+      counter +=1;
+      pages.push(i);
     }
   }
-  else {
-    let i = (pageNumber-1)*pageItems;
+  return pages;
+}
 
-    for(i; i < items.length; i++){
-      if(!items[i].blocked) appendLi(items[i].name,items[i].id,items[i].checked,items[i].editing);
-    }
+const makeToDo = function() {
+  let pages = visiblePages();
+  console.log(pages);
+  for(i = 0 ; i < pages.length; i++){
+    {appendLi(items[pages[i]].name,items[pages[i]].id,items[pages[i]].checked,items[pages[i]].editing)};
   }
 };
 
@@ -83,6 +87,15 @@ const removeItem = function () {
     });
 };
 
+const blockedItems = function () {
+  let blockedCount = 0;
+  if(items.length > 0){
+    for(i = 0; i < items.length; i++) {
+      if(items[i].blocked) {blockedCount+=1;}
+    }
+  }
+  return blockedCount;
+}
 
 // Id generation
 const idGener = function() {
@@ -139,14 +152,12 @@ const addItem = function() {
     if (keycode === 13) {
 
       // If input not empty
-      if (inputCheck()) {
-        addItemProperty($('#text-input[name=task]').val());
-        $('#checkAll').prop('checked',false);
-
-
-        render();
-      }
-    }
+        if (inputCheck()) {
+          addItemProperty($ ('#text-input[name=task]').val());
+          $('#checkAll').prop('checked',false);
+          render();
+        }
+      }     
   });
 };
 
@@ -233,7 +244,6 @@ const editItem = function() {
       let index = findIndex(idList,id);
 
       items[index].editing === true ? items[index].editing = false : items[index].editing = true;
-      render();
 
     });
 };

@@ -1,9 +1,8 @@
 
 
-    #1 when filter unchecked have chance to not full element on page
+    #1 pagination
+    status: 7 elem, checked
+    one element go to page 2, but it should be one
 
-    3 elem one page
-    2 elem second page
-
-    need fix pageNumber with block elem
+    
 
