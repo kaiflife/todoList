@@ -18,7 +18,9 @@ const render = function() {
 
   pageNumber>pageCount && pageCount > 0 ? pageNumber=pageCount : true;
 
+
   makeToDo();
+
 
   pagination(pageCount);
 };
@@ -241,15 +243,16 @@ const unblockAll = function() {
     .on('click', '.show-all', function() {
 
       if (items.length > 0) {
+
         for (i = 0; i < items.length; i++) {
           let blocked = items[i].blocked;
           if (blocked) {
             items[i].blocked = false;
-            $(`#${items[i].id}`.removeClass('blocked'));
+            $(`#${items[i].id}`).removeClass('blocked');
           }
-          render();
         }
       }
+      render();
     });
 };
 
@@ -263,11 +266,11 @@ const blockChecked = function() {
           if (checked === 'checked') {
             items[i].blocked = true;
 
-            $(`#${items[i].id}`.addClass('blocked'));
+            $(`#${items[i].id}`).addClass('blocked');
 
           } else {
             items[i].blocked = false;
-            $(`#${items[i].id}`.removeClass('blocked'));
+            $(`#${items[i].id}`).removeClass('blocked');
           }
         }
       }
@@ -282,11 +285,15 @@ const blockUnchecked = function() {
       if (items.length > 0) {
         for (i = 0; i < items.length; i++) {
           let checked = items[i].checked;
-          if (checked === 'unchecked') {
+          if (!checked) {
             items[i].blocked = true;
+            $(`#${items[i].id}`).addClass('blocked');
+
+
 
           } else {
             items[i].blocked = false;
+            $(`#${items[i].id}`).removeClass('blocked');
 
           }
         }
@@ -335,9 +342,9 @@ const inputCheck = function() {
 };
 
 
-// unblockAll();
-// blockChecked();
-// blockUnchecked();
+unblockAll();
+blockChecked();
+blockUnchecked();
 
 editItem();
 deleteChecked();

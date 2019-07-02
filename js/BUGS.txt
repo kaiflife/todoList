@@ -1,0 +1,9 @@
+
+
+    #1 when filter unchecked have chance to not full element on page
+
+    3 elem one page
+    2 elem second page
+
+    need fix pageNumber with block elem
+
