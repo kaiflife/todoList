@@ -55,14 +55,13 @@ const choosePage = function() {
   $('body')
     .click(function(e) {
 
+
       let target = $(e.target);
 
-
-      if(target[0].id === '#pageNumber'){
-        pageNumber = target[0].value;
-        render();
-      }
-
+        if(target[0].id === '#pageNumber'){
+          pageNumber = target[0].value;
+          render();
+        }
   });
 };
 
@@ -74,7 +73,7 @@ const removeItem = function () {
 
       let index = findIndex(idList,id);
 
-      idList.splice(index,1);
+      idList.splice(index,1); // remove id
       items.splice(index,1);// remove 1 element in array
 
       $('#checkAll').prop('checked',false);
@@ -163,6 +162,22 @@ const checkAllItems = function () {
 };
 
 
+const deleteChecked = function() {
+  $(document)
+    .on('click', '#deleteId', () => {
+    for(i=0;i < items.length;i++){
+
+      let checked = items[i].checked;
+      if(checked === 'checked'){
+        idList.splice(i,1); // remove id
+        items.splice(i,1);// remove 1 element in array
+      }
+      render();
+    }
+
+    });
+};
+
 // append to ul new li
 const appendLi = function (name,id,checked,editing) {
   $('#list')
@@ -178,21 +193,18 @@ let checkItem = function () {
     .click(function(e) {
 
       let target = $(e.target);
+        if(target[0].tagName === 'LI'){
+          let id = Number(target[0].id);
 
-      if(target[0].tagName === 'LI'){
-        let id = Number(target[0].id);
+          let index = findIndex(idList, id);
 
-        let index = findIndex(idList, id);
-
-        if (items[index].checked === 'checked') {
-          items[index].checked = '';
-        } else {
-          items[index].checked = 'checked';
+          if (items[index].checked === 'checked') {
+            items[index].checked = '';
+          } else {
+            items[index].checked = 'checked';
+          }
+          render();
         }
-        render();
-      }
-
-
     });
 };
 
@@ -239,20 +251,6 @@ const checkAll = function (check) {
 
 
 
-
-// addRemoveClass('checked');
-const addRemoveClass = function(className) {
-  $('li').click(function() {
-    if ($(this).hasClass(className)) {
-      $(this).removeClass(className);
-    } else {
-      $(this).addClass(className);
-    }
-  });
-};
-
-
-
 const inputCheck = function() {
   if ($('#text-input').val()
     .replace(/^\s*/, '')
@@ -263,6 +261,7 @@ const inputCheck = function() {
   return false;
 };
 
+deleteChecked()
 checkItem();
 checkAllItems();
 removeItem();

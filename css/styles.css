@@ -162,3 +162,34 @@ input {
 .active-page{
     background-color: deepskyblue;
 }
+
+
+.check {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin-top: 6%;
+}
+
+
+.check div:first-child {
+    margin: 0;
+}
+
+.button-delete {
+    border:none;
+    background: white;
+    margin-left: 1em;
+}
+
+.input-checkAll {
+    margin: 0;
+    padding: 0;
+    width: 16%;
+}
+
+label {
+    margin: 0;
+}

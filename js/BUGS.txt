@@ -1,2 +1,3 @@
-    When add new element checkbox is checked
-    need clear unchecked
+
+
+       1# class checkItem take error when click on checkbox
