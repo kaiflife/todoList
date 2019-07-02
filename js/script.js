@@ -1,11 +1,11 @@
 
 let items = [];
-let item = {
-  id: Math.random(),
-  checked:false,
-  name: '',
-  editing: false
-};
+// let item = {
+//   id: Math.random(),
+//   checked:false,
+//   name: '',
+//   editing: false
+// };
 let idList = [];
 
 let pageNumber = 1;
@@ -20,7 +20,7 @@ const render = function() {
 
   let pageCount = Math.ceil(items.length / pageItems);
 
-  pageNumber>pageCount ? pageNumber=pageCount : true;
+  pageNumber>pageCount && pageCount > 0 ? pageNumber=pageCount : true;
 
   makeToDo();
 
@@ -37,12 +37,14 @@ const makeToDo = function() {
 
   if(items.length >= pageNumber*pageItems){
     let i = (pageNumber-1)*5;
+
     for (i; i < pageNumber*pageItems; i++) {
       appendLi(items[i].name,items[i].id,items[i].checked,items[i].editing);
     }
   }
   else {
     let i = (pageNumber-1)*pageItems;
+
     for(i; i < items.length; i++){
       appendLi(items[i].name,items[i].id,items[i].checked,items[i].editing);
     }
@@ -68,7 +70,7 @@ const choosePage = function() {
 // if click on cross , remove element from toDo List
 const removeItem = function () {
   $('body')
-    .on('click', '#list a', function() {
+    .on('click', '#list .close', function() {
       let id = Number($(this).parent().attr('id'));
 
       let index = findIndex(idList,id);
@@ -140,52 +142,65 @@ const addItem = function() {
         addItemProperty($('#text-input[name=task]').val());
         $('#checkAll').prop('checked',false);
 
+
         render();
       }
     }
   });
 };
 
+const deleteChecked = function() {
+  $(document)
+    .on('click', '#deleteId', () => {
+      if (items.length > 0) {
+        let i = 0;
+        if(!uncheckedItems())
+        {
+          items = [];
+          idList = [];
+          pageNumber = 1;
+          render();
+          return 0;
+        }
+        for (i = 0; i < items.length; i++) {
+            let checked = items[i].checked;
+            if (checked === 'checked') {
+              idList.splice(i, 1); // remove id
+              items.splice(i, 1);// remove 1 element in array
+              i -=1;
+              render();
+            }
+        }
+      }
+    });
+};
 
 // Check all items, or uncheck all items
 const checkAllItems = function () {
   $(document)
     .on('click', '#checkAll', () => {
-      if (checkItems()) {
-        checkAll(true);
-      } else {
-        checkAll(false);
+      if(items.length > 0) {
+
+        if (uncheckedItems()) {
+          checkAll(true);
+        } else {
+          checkAll(false);
+        }
+        render();
       }
-      render();
-
-    });
-};
-
-
-const deleteChecked = function() {
-  $(document)
-    .on('click', '#deleteId', () => {
-    for(i=0;i < items.length;i++){
-
-      let checked = items[i].checked;
-      if(checked === 'checked'){
-        idList.splice(i,1); // remove id
-        items.splice(i,1);// remove 1 element in array
-      }
-      render();
-    }
-
     });
 };
 
 // append to ul new li
 const appendLi = function (name,id,checked,editing) {
   $('#list')
-    .append($(`<li id=${id} class="${checked + ' ' + editing + ' item'}">${name} <a href='#' `
-      + `class='close' aria-hidden='true'>&times;</a></li>`));
+    .append($(`<li id=${id} contenteditable="${editing}" class="${checked + ' ' + editing + ' item'}">${name}   <a href='#' `
+      + `class='close' aria-hidden='true'>&times;</a>
+<a href='#' class='editItem' aria-hidden='true'>&#128736;</a>
+</li>`));
   return true;
 };
-
+//
 
 //check one item
 let checkItem = function () {
@@ -203,48 +218,109 @@ let checkItem = function () {
           } else {
             items[index].checked = 'checked';
           }
+          $('#checkAll').prop('checked',false);
           render();
         }
     });
 };
 
+const editItem = function() {
+  $('body')
+    .on('click', '#list .editItem', function() {
+      let id = Number($(this).parent().attr('id'));
+
+      let index = findIndex(idList,id);
+
+      items[index].editing === true ? items[index].editing = false : items[index].editing = true;
+      render();
+
+    });
+};
+
+const unblockAll = function() {
+  $('body')
+    .on('click', '.show-all', function() {
+
+        for (i = 0; i < items.length; i++) {
+          let name = items[i].name;
+          if (name === 'blocked') {
+            items[i].name = 'unblocked';
+        }
+      render();
+
+    });
+};
+
+const blockChecked = function() {
+  $('body')
+    .on('click', '.show-unchecked', function() {
+
+      if(checkedItems()){
+        for (i = 0; i < items.length; i++) {
+          let checked = items[i].checked;
+          if (checked === 'checked') {
+            items[i].name = 'blocked';
+          } else {
+            items[i].name = 'unblocked';
+          }
+        }
+      }
+      render();
+
+    });
+};
+
+const blockUnchecked = function() {
+  $('body')
+    .on('click', '.show-checked', function() {
+      if(checkedItems()){
+        for (i = 0; i < items.length; i++) {
+          let checked = items[i].checked;
+          if (checked === 'unchecked') {
+            items[i].name = 'blocked';
+          } else {
+            items[i].name = 'unblocked';
+          }
+        }
+      }
+      render();
+
+    });
+};
 
 // find unchecked li
-const checkItems = function () {
-  let unchecked;
-  $('ul li').each(function(i)
-  {
-    let id = Number($(this).attr('id'));
 
-    let index = findIndex(idList, id);
+const checkedItems = function () {
+  let checked = false;
 
-    if(items[index].checked === 'checked' && unchecked !=true) {
+  for(let i = 0; i < items.length; i++){
+    if(items[i].checked === 'checked') checked +=1;
+  }
 
-      unchecked = false;
-    }
-    else {
-      unchecked = true;
-    }
-  });
+  return checked; // true if have unchecked, false if everybody is checked
+};
 
-  return unchecked; // every class='checked'
+const uncheckedItems = function() {
+  let unchecked = false;
+
+  for(let i = 0; i < items.length; i++){
+    if(items[i].checked !== 'checked') unchecked = true;
+  }
+
+  return unchecked; // true if have unchecked, false if everybody is checked
 };
 
 // add check/uncheck elements
 const checkAll = function (check) {
   if(check){
-    $('ul li').each(function(i) {
-      let id = Number($(this).attr('id'));
-      let index = findIndex(idList, id);
-      items[index].checked = 'checked';
-    });
+      for(let i = 0; i < items.length; i++) {
+        items[i].checked = 'checked';
+      }
   }
   else {
-    $('ul li').each(function(i) {
-      let id = Number($(this).attr('id'));
-      let index = findIndex(idList, id);
-      items[index].checked = '';
-    });
+    for(let i = 0; i < items.length; i++) {
+      items[i].checked = '';
+    }
   }
   return true;
 };
@@ -261,7 +337,11 @@ const inputCheck = function() {
   return false;
 };
 
-deleteChecked()
+showAll();
+showChecked();
+showUnchecked();
+editItem();
+deleteChecked();
 checkItem();
 checkAllItems();
 removeItem();

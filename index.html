@@ -23,14 +23,22 @@
     <input type="text" id="text-input" placeholder="Title..." name="task">
     <button class="button-add" id="addId">Add</button>
 
-
-    <div class="check">
-        <div class="checkAll">
-            <input type="checkbox" class="input-checkAll" id="checkAll" name="Check/uncheck all">
-            <label style="margin:0;" for="checkAll">CheckAll</label>
+    <div class="options">
+        <div class="check">
+            <div class="checkAll">
+                <input type="checkbox" class="input-checkAll" id="checkAll" name="Check/uncheck all">
+                <label style="margin:0;" for="checkAll">CheckAll</label>
+            </div>
+            <button class="button-delete" id="deleteId">Delete checked</button>
         </div>
-        <button class="button-delete" id="deleteId">Delete checked</button>
+
+        <div class="filters">
+            <p class="show-all">All</p>
+            <p class="show-checked">Checked</p>
+            <p class="show-unchecked">Unchecked</p>
+        </div>
     </div>
+
 
 
 

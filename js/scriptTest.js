@@ -1,11 +1,11 @@
 
 let items = [];
-let item = {
-  id: Math.random(),
-  checked:false,
-  name: '',
-  editing: false
-};
+// let item = {
+//   id: Math.random(),
+//   checked:false,
+//   name: '',
+//   editing: false
+// };
 let idList = [];
 
 let pageNumber = 1;
@@ -20,6 +20,8 @@ const render = function() {
 
   let pageCount = Math.ceil(items.length / pageItems);
 
+  pageNumber>pageCount && pageCount > 0 ? pageNumber=pageCount : true;
+
   makeToDo();
 
   pagination(pageCount);
@@ -27,7 +29,7 @@ const render = function() {
 
 const pagination = function(pageCount) {
   for (i = 0; i < pageCount; i++) {
-    $('.pagination').append(`<button id='thisButton' class="page-number">${i+1}</button>`);
+    $('.pagination').append(`<button id='#pageNumber' class="page-number" value="${i+1}">${i+1}</button>`);
   }
 };
 
@@ -35,23 +37,34 @@ const makeToDo = function() {
 
   if(items.length >= pageNumber*pageItems){
     let i = (pageNumber-1)*5;
+
     for (i; i < pageNumber*pageItems; i++) {
       appendLi(items[i].name,items[i].id,items[i].checked,items[i].editing);
     }
   }
   else {
     let i = (pageNumber-1)*pageItems;
+
     for(i; i < items.length; i++){
       appendLi(items[i].name,items[i].id,items[i].checked,items[i].editing);
     }
   }
 };
 
+
+// Change page
 const choosePage = function() {
-  $("#thisButton").on("click", function(){
-    pageNumber = $(this).val();
-    render();
-  });
+  $('body')
+    .click(function(e) {
+
+
+      let target = $(e.target);
+
+      if(target[0].id === '#pageNumber'){
+        pageNumber = target[0].value;
+        render();
+      }
+    });
 };
 
 // if click on cross , remove element from toDo List
@@ -62,13 +75,16 @@ const removeItem = function () {
 
       let index = findIndex(idList,id);
 
-      idList.splice(index,1);
+      idList.splice(index,1); // remove id
       items.splice(index,1);// remove 1 element in array
 
+      $('#checkAll').prop('checked',false);
       render();
     });
 };
 
+
+// Id generation
 const idGener = function() {
   let randId = Math.random();
   while (!(idList.findIndex(item => item.name === randId))) {
@@ -79,6 +95,8 @@ const idGener = function() {
   return randId;
 };
 
+
+//find ad index of item
 const findIndex = function(arr,name) {
   for(i=0;i<arr.length;i++) {
     if(Number(arr[i])===name){
@@ -87,6 +105,8 @@ const findIndex = function(arr,name) {
   }
 };
 
+
+// add properties to array
 const addItemProperty = function(name,id=idGener()) {
   items.unshift({
     name: name,
@@ -122,25 +142,54 @@ const addItem = function() {
         addItemProperty($('#text-input[name=task]').val());
         $('#checkAll').prop('checked',false);
 
+
         render();
       }
     }
   });
 };
 
-const checkAllItems = function () {
+const deleteChecked = function() {
   $(document)
-    .on('click', '#checkAll', () => {
-      if (checkItems()) {
-        checkAll(true);
-      } else {
-        checkAll(false);
+    .on('click', '#deleteId', () => {
+      if (items.length > 0) {
+        let i = 0;
+        if(!uncheckedItems())
+        {
+          items = [];
+          idList = [];
+          pageNumber = 1;
+          render();
+          return 0;
+        }
+        for (i = 0; i < items.length; i++) {
+          let checked = items[i].checked;
+          if (checked === 'checked') {
+            idList.splice(i, 1); // remove id
+            items.splice(i, 1);// remove 1 element in array
+            i -=1;
+            render();
+          }
+        }
       }
-      render();
-
     });
 };
 
+// Check all items, or uncheck all items
+const checkAllItems = function () {
+  $(document)
+    .on('click', '#checkAll', () => {
+      if(items.length > 0) {
+
+        if (uncheckedItems()) {
+          checkAll(true);
+        } else {
+          checkAll(false);
+        }
+        render();
+      }
+    });
+};
 
 // append to ul new li
 const appendLi = function (name,id,checked,editing) {
@@ -157,7 +206,6 @@ let checkItem = function () {
     .click(function(e) {
 
       let target = $(e.target);
-
       if(target[0].tagName === 'LI'){
         let id = Number(target[0].id);
 
@@ -168,66 +216,48 @@ let checkItem = function () {
         } else {
           items[index].checked = 'checked';
         }
+        $('#checkAll').prop('checked',false);
         render();
       }
-
-
     });
 };
 
 
 // find unchecked li
-const checkItems = function () {
-  let unchecked;
-  $('ul li').each(function(i)
-  {
-    let id = Number($(this).attr('id'));
 
-    let index = findIndex(idList, id);
+const checkedItems = function () {
+  let checked = false;
 
-    if(items[index].checked === 'checked' && unchecked !=true) {
+  for(let i = 0; i < items.length; i++){
+    if(items[i].checked === 'checked') checked +=1;
+  }
 
-      unchecked = false;
-    }
-    else {
-      unchecked = true;
-    }
-  });
+  return checked; // true if have unchecked, false if everybody is checked
+};
 
-  return unchecked; // every class='checked'
+const uncheckedItems = function() {
+  let unchecked = false;
+
+  for(let i = 0; i < items.length; i++){
+    if(items[i].checked !== 'checked') unchecked = true;
+  }
+
+  return unchecked; // true if have unchecked, false if everybody is checked
 };
 
 // add check/uncheck elements
 const checkAll = function (check) {
   if(check){
-    $('ul li').each(function(i) {
-      let id = Number($(this).attr('id'));
-      let index = findIndex(idList, id);
-      items[index].checked = 'checked';
-    });
+    for(let i = 0; i < items.length; i++) {
+      items[i].checked = 'checked';
+    }
   }
   else {
-    $('ul li').each(function(i) {
-      let id = Number($(this).attr('id'));
-      let index = findIndex(idList, id);
-      items[index].checked = '';
-    });
+    for(let i = 0; i < items.length; i++) {
+      items[i].checked = '';
+    }
   }
   return true;
-};
-
-
-
-
-// addRemoveClass('checked');
-const addRemoveClass = function(className) {
-  $('li').click(function() {
-    if ($(this).hasClass(className)) {
-      $(this).removeClass(className);
-    } else {
-      $(this).addClass(className);
-    }
-  });
 };
 
 
@@ -242,6 +272,7 @@ const inputCheck = function() {
   return false;
 };
 
+deleteChecked()
 checkItem();
 checkAllItems();
 removeItem();

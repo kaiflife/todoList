@@ -1,3 +1,0 @@
-
-
-       1# class checkItem take error when click on checkbox

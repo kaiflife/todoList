@@ -113,18 +113,14 @@ input {
 }
 
 .checkAll {
-    width: 13%;
-
+    width: 72%;
     float: left;
     text-align: center;
     font-size: 16px;
     cursor: pointer;
-
     margin-top: 2em;
     background: darkgray;
-
     padding: 10px;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -166,11 +162,11 @@ input {
 
 .check {
     display: flex;
-    justify-content: left;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 15%;
     height: 100%;
-    margin-top: 6%;
 }
 
 
@@ -181,7 +177,10 @@ input {
 .button-delete {
     border:none;
     background: white;
-    margin-left: 1em;
+
+    margin-top: 1em;
+    width: 72%;
+    font-size: 15px;
 }
 
 .input-checkAll {
@@ -192,4 +191,23 @@ input {
 
 label {
     margin: 0;
+}
+
+
+.filters {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.filters p {
+    margin: 0;
+}
+
+.options {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    align-items: center;
+    margin-top: 5em;
 }
