@@ -1,11 +1,6 @@
 
 let items = [];
-// let item = {
-//   id: Math.random(),
-//   checked:false,
-//   name: '',
-//   editing: false
-// };
+
 let idList = [];
 
 let pageNumber = 1;
@@ -39,14 +34,14 @@ const makeToDo = function() {
     let i = (pageNumber-1)*5;
 
     for (i; i < pageNumber*pageItems; i++) {
-      appendLi(items[i].name,items[i].id,items[i].checked,items[i].editing);
+      if(!items[i].blocked) appendLi(items[i].name,items[i].id,items[i].checked,items[i].editing);
     }
   }
   else {
     let i = (pageNumber-1)*pageItems;
 
     for(i; i < items.length; i++){
-      appendLi(items[i].name,items[i].id,items[i].checked,items[i].editing);
+      if(!items[i].blocked) appendLi(items[i].name,items[i].id,items[i].checked,items[i].editing);
     }
   }
 };
@@ -112,7 +107,8 @@ const addItemProperty = function(name,id=idGener()) {
     name: name,
     id: id,
     checked: false,
-    editing: false
+    editing: false,
+    blocked: false
   });
 };
 
@@ -240,14 +236,16 @@ const editItem = function() {
 const unblockAll = function() {
   $('body')
     .on('click', '.show-all', function() {
-
+      if (items.length > 0) {
         for (i = 0; i < items.length; i++) {
-          let name = items[i].name;
-          if (name === 'blocked') {
-            items[i].name = 'unblocked';
+          let blocked = items[i].blocked;
+          if (blocked) {
+            items[i].blocked = false;
+            $(`#${items[i].id}`.removeClass('blocked'));
+          }
+          render();
         }
-      render();
-
+      }
     });
 };
 
@@ -255,13 +253,16 @@ const blockChecked = function() {
   $('body')
     .on('click', '.show-unchecked', function() {
 
-      if(checkedItems()){
+      if (items.length > 0) {
         for (i = 0; i < items.length; i++) {
           let checked = items[i].checked;
           if (checked === 'checked') {
-            items[i].name = 'blocked';
+            items[i].blocked = true;
+            $(`#${items[i].id}`.addClass('blocked'));
+
           } else {
-            items[i].name = 'unblocked';
+            items[i].blocked = false;
+            $(`#${items[i].id}`.removeClass('blocked'));
           }
         }
       }
@@ -273,13 +274,13 @@ const blockChecked = function() {
 const blockUnchecked = function() {
   $('body')
     .on('click', '.show-checked', function() {
-      if(checkedItems()){
+      if (items.length > 0) {
         for (i = 0; i < items.length; i++) {
           let checked = items[i].checked;
           if (checked === 'unchecked') {
-            items[i].name = 'blocked';
+            items[i].blocked = true;
           } else {
-            items[i].name = 'unblocked';
+            items[i].blocked = false;
           }
         }
       }
@@ -290,15 +291,6 @@ const blockUnchecked = function() {
 
 // find unchecked li
 
-const checkedItems = function () {
-  let checked = false;
-
-  for(let i = 0; i < items.length; i++){
-    if(items[i].checked === 'checked') checked +=1;
-  }
-
-  return checked; // true if have unchecked, false if everybody is checked
-};
 
 const uncheckedItems = function() {
   let unchecked = false;
@@ -337,9 +329,9 @@ const inputCheck = function() {
   return false;
 };
 
-showAll();
-showChecked();
-showUnchecked();
+// showAll();
+// showChecked();
+// showUnchecked();
 editItem();
 deleteChecked();
 checkItem();
