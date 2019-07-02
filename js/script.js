@@ -20,6 +20,8 @@ const render = function() {
 
   let pageCount = Math.ceil(items.length / pageItems);
 
+  pageNumber>pageCount ? pageNumber=pageCount : true;
+
   makeToDo();
 
   pagination(pageCount);
@@ -27,7 +29,7 @@ const render = function() {
 
 const pagination = function(pageCount) {
   for (i = 0; i < pageCount; i++) {
-    $('.pagination').append(`<button id='thisButton' class="page-number">${i+1}</button>`);
+    $('.pagination').append(`<button id='#pageNumber' class="page-number" value="${i+1}">${i+1}</button>`);
   }
 };
 
@@ -47,10 +49,20 @@ const makeToDo = function() {
   }
 };
 
+
+// Change page
 const choosePage = function() {
-  $("#thisButton").on("click", function(){
-    pageNumber = $(this).val();
-    render();
+  $('body')
+    .click(function(e) {
+
+      let target = $(e.target);
+
+
+      if(target[0].id === '#pageNumber'){
+        pageNumber = target[0].value;
+        render();
+      }
+
   });
 };
 
@@ -65,10 +77,13 @@ const removeItem = function () {
       idList.splice(index,1);
       items.splice(index,1);// remove 1 element in array
 
+      $('#checkAll').prop('checked',false);
       render();
     });
 };
 
+
+// Id generation
 const idGener = function() {
   let randId = Math.random();
   while (!(idList.findIndex(item => item.name === randId))) {
@@ -79,6 +94,8 @@ const idGener = function() {
   return randId;
 };
 
+
+//find ad index of item
 const findIndex = function(arr,name) {
   for(i=0;i<arr.length;i++) {
     if(Number(arr[i])===name){
@@ -87,6 +104,8 @@ const findIndex = function(arr,name) {
   }
 };
 
+
+// add properties to array
 const addItemProperty = function(name,id=idGener()) {
   items.unshift({
     name: name,
@@ -128,6 +147,8 @@ const addItem = function() {
   });
 };
 
+
+// Check all items, or uncheck all items
 const checkAllItems = function () {
   $(document)
     .on('click', '#checkAll', () => {
@@ -151,7 +172,7 @@ const appendLi = function (name,id,checked,editing) {
 };
 
 
-
+//check one item
 let checkItem = function () {
   $('body')
     .click(function(e) {
