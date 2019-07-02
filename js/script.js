@@ -1,12 +1,7 @@
 
 let items = [];
-// let item = {
-//   id: Math.random(),
-//   checked:false,
-//   name: '',
-//   blocked: false,
-//   editing: false
-// };
+
+
 let idList = [];
 
 let pageNumber = 1;
@@ -40,18 +35,16 @@ const makeToDo = function() {
     let i = (pageNumber-1)*5;
 
     for (i; i < pageNumber*pageItems; i++) {
-      if(!items[i].blocked){
-        appendLi(items[i].name,items[i].blocked,items[i].id,items[i].checked,items[i].editing);
-      }
+
+      if(!items[i].blocked) appendLi(items[i].name,items[i].id,items[i].checked,items[i].editing);
+
     }
   }
   else {
     let i = (pageNumber-1)*pageItems;
 
     for(i; i < items.length; i++){
-      if(!items[i].blocked) {
-        appendLi(items[i].name, items[i].blocked,items[i].id, items[i].checked, items[i].editing);
-      }
+      if(!items[i].blocked) appendLi(items[i].name,items[i].id,items[i].checked,items[i].editing);
     }
   }
 };
@@ -252,8 +245,7 @@ const unblockAll = function() {
           let blocked = items[i].blocked;
           if (blocked) {
             items[i].blocked = false;
-            $(`#${item[i].id}`)
-              .removeClass('blocked');
+            $(`#${items[i].id}`.removeClass('blocked'));
           }
           render();
         }
@@ -270,14 +262,12 @@ const blockChecked = function() {
           let checked = items[i].checked;
           if (checked === 'checked') {
             items[i].blocked = true;
-            $(`#${item[i].id}`)
-              .addClass('blocked');
+
+            $(`#${items[i].id}`.addClass('blocked'));
 
           } else {
             items[i].blocked = false;
-            $(`#${item[i].id}`)
-              .removeClass('blocked');
-
+            $(`#${items[i].id}`.removeClass('blocked'));
           }
         }
       }
@@ -294,12 +284,9 @@ const blockUnchecked = function() {
           let checked = items[i].checked;
           if (checked === 'unchecked') {
             items[i].blocked = true;
-            $(`#${item[i].id}`).addClass('blocked');
 
           } else {
             items[i].blocked = false;
-            $(`#${item[i].id}`).removeClass('blocked');
-
 
           }
         }
@@ -347,9 +334,11 @@ const inputCheck = function() {
   return false;
 };
 
-unblockAll();
-blockChecked();
-blockUnchecked();
+
+// unblockAll();
+// blockChecked();
+// blockUnchecked();
+
 editItem();
 deleteChecked();
 checkItem();
