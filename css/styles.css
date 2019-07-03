@@ -241,4 +241,7 @@ label {
     align-items: center;
 }
 
-.butt
+.button-reset {
+    background: white;
+    border: white;
+}

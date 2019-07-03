@@ -7,14 +7,19 @@ let idList = [];
 let pageNumber = 1;
 let pageItems = 5;
 let activeFilter = $('.showAll');
+let focusItem;
 
 const render = function() {
   //clear ul
   $('#list').empty();
 
+  //clear input
+  $('#text-input').val('');
+
   //clear pagination
   $('.pagination').empty();
 
+  // check active filter and filter items
   checkFilter();
 
 
@@ -27,6 +32,7 @@ const render = function() {
 
   pagination(pageCount);
   itemsCounter();
+
 
 };
 
@@ -143,6 +149,42 @@ const idGener = function() {
   return randId;
 };
 
+const unfocus = function() {
+  $(document).focusout(function() {
+    if(focusItem !==undefined){
+
+      let id = Number(focusItem.parentNode.id);
+
+      let index = findIndex(idList,id);
+      items[index].name = $(focusItem).text();
+      focusItem.attributes.getNamedItem('contenteditable').
+        value = false;
+
+    }
+  });
+};
+
+const clickTwice = function () {
+  let touchtime = 0;
+  $(document)
+    .on('click', '.editing', (e) => {
+      if (((new Date().getTime()) - touchtime) < 300) {
+        editItem(e)
+      }
+      touchtime = new Date().getTime();
+    });
+};
+
+
+const editItem = function(e) {
+
+  let target = e.target;
+  if (target.className === 'editing') {
+    target.attributes.getNamedItem('contenteditable').value = true;
+    $(target).focus();
+    focusItem = target;
+  }
+};
 
 //find ad index of item
 const findIndex = function(arr,name) {
@@ -160,9 +202,12 @@ const addItemProperty = function(name,id=idGener()) {
     name: name,
     id: id,
     checked: false,
-    blocked: false
+    blocked: false,
+    editing: false
   });
 };
+
+
 
 // Add items to array
 const addItem = function() {
@@ -238,11 +283,11 @@ const checkAllItems = function () {
 };
 
 // append to ul new li
-const appendLi = function (name,id,checked) {
+const appendLi = function (name,id,checked,editing) {
   $('#list')
-    .append($(`<li id=${id} contenteditable=true class="${checked +  ' item'}">${name}   <a href='#' `
+    .append($(`<li id=${id}  class="${checked +  ' item'}">
+    <p contenteditable=${editing} class="editing">${name}</p>   <a href='#' `
       + `class='close' aria-hidden='true'>&times;</a>
-<a href='#' class='editItem' aria-hidden='true'>&#128736;</a>
 </li>`));
   return true;
 };
@@ -270,24 +315,7 @@ let checkItem = function () {
     });
 };
 
-const changeText = function() {
-  element.change(function() {
-    let content = $(this).html();
 
-    items[index].name = content;
-  });
-};
-
-
-const editItem = function() {
-  $('body')
-    .on('click', '#list .editItem', function() {
-      let id = Number($(this).parent().attr('id'));
-
-      let index = findIndex(idList,id);
-
-    });
-};
 
 const changeFilter = function(newFilter) {
 
@@ -300,20 +328,20 @@ const changeFilter = function(newFilter) {
 };
 
 const chooseFilter = function () {
+  // filter All
   $('body').on('click', '.show-all', function() {
     filterAll();
     render();
 
   });
-
-
+  // filter Unchecked
   $('body').on('click', '.show-unchecked', function() {
     filterUnchecked();
 
     render();
 
   });
-
+  // filter Checked
   $('body').on('click', '.show-checked', function() {
     filterChecked();
 
@@ -415,7 +443,8 @@ const inputCheck = function() {
 render();
 chooseFilter();
 
-editItem();
+unfocus();
+clickTwice();
 deleteChecked();
 checkItem();
 checkAllItems();

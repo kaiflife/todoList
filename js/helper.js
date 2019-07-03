@@ -25,7 +25,7 @@ const inputCheck = function() {
     } else {
         return false;
     }
-}
+};
 
 const log = function(item) {
     console.log(item);
@@ -57,6 +57,34 @@ let checkAll = function (check) {
     }
     return true;
 }
+
+const unfocus = function() {
+    $(document).focusout(function() {
+        if(focusItem !==undefined){
+
+            let id = Number(focusItem.parentNode.id);
+
+            let index = findIndex(idList,id);
+            items[index].name = $(focusItem).text();
+            focusItem.attributes.getNamedItem('contenteditable').
+              value = false;
+
+        }
+    });
+};
+
+
+const clickTwice = function () {
+    let touchtime = 0;
+    $(document)
+      .on('click', '.editing', (e) => {
+          if (((new Date().getTime()) - touchtime) < 300) {
+              editItem(e)
+          }
+          touchtime = new Date().getTime();
+      });
+};
+
 
 // find index by name
 const index = Data.findIndex(item => item.name === 'John');

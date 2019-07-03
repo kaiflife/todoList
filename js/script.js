@@ -1,15 +1,20 @@
 
 let items = [];
 
-
 let idList = [];
 
+let filter = [];
+
+
 let pageNumber = 1;
-let pageItems = 5;
+let pageItems = 5; // Items on one page
 let activeFilter = $('.showAll');
 let focusItem;
 
 const render = function() {
+
+  if(pageItems <= 0) pageNumber=1;
+
   //clear ul
   $('#list').empty();
 
@@ -21,9 +26,10 @@ const render = function() {
 
   // check active filter and filter items
   checkFilter();
+  filteredItems();
 
 
-  let pageCount = Math.ceil((items.length - blockedItems())/pageItems);
+  let pageCount = Math.ceil((items.length - blockedItems() - filter.length)/pageItems);
 
   pageNumber>pageCount && pageCount > 0 ? pageNumber=pageCount : true;
 
@@ -74,7 +80,7 @@ const checkFilter = function() {
   }
 };
 
-const visiblePages = function () {
+const visibleItems = function () {
   let pages = [];
   let counter = 0;
   let i = (pageNumber-1) * pageItems;
@@ -82,7 +88,7 @@ const visiblePages = function () {
     if(counter === pageItems){
       return pages;
     }
-    if(!items[i].blocked){
+    if(!items[i].blocked && filter.indexOf(i)!==-1){
       counter +=1;
       pages.push(i);
     }
@@ -91,12 +97,45 @@ const visiblePages = function () {
 };
 
 const makeToDo = function() {
-  let pages = visiblePages();
+  let pages = visibleItems();
   for(i = 0 ; i < pages.length; i++){
     {appendLi(items[pages[i]].name,items[pages[i]].id,items[pages[i]].checked,items[pages[i]].editing)};
   }
 };
 
+const filteredItems = function() {
+  filter = [];
+  let text = $('#find-items').val();
+  if(items.length > 0){
+    for(i=0;i < items.length;i++){
+      if(items[i].name.indexOf(text) !==-1){
+
+        filter.push(i);
+      }
+    }
+  }
+
+  log(filter);
+  log(filter.length + ' indexes of filtered items');
+  return true;
+};
+
+const textFilter = function() {
+
+  $('#find-items').focus(function() {
+
+    $('#find-items').keyup(function() {
+      let text = $('#find-items').val();
+      if(inputCheck(text))
+      filteredItems();
+    });
+  });
+
+  $('#resetId').click(function() {
+    $('#find-items').val('');
+  });
+  render();
+};
 
 // Change page
 const choosePage = function() {
@@ -215,9 +254,11 @@ const addItem = function() {
   // append item when click button-add
   $(document)
     .on('click', '.button-add', () => {
-      if (inputCheck()) {
+      let text = $('#text-input[name=task]').val()
+
+      if (inputCheck(text)) {
         $('.button-add').blur();
-        addItemProperty($('#text-input[name=task]').val());
+        addItemProperty(text);
         $('#checkAll').prop('checked',false);
         render();
       }
@@ -230,9 +271,10 @@ const addItem = function() {
     // Enter pressed
     if (keycode === 13) {
 
+      let text = $('#text-input[name=task]').val()
       // If input not empty
-        if (inputCheck()) {
-          addItemProperty($ ('#text-input[name=task]').val());
+        if (inputCheck(text)) {
+          addItemProperty(text);
           $('#checkAll').prop('checked',false);
           render();
         }
@@ -430,8 +472,8 @@ const checkAll = function (check) {
 
 
 
-const inputCheck = function() {
-  if ($('#text-input').val()
+const inputCheck = function(text) {
+  if (text
     .replace(/^\s*/, '')
     .replace(/\s*$/, '') !== '') {
     return true;
@@ -443,6 +485,7 @@ const inputCheck = function() {
 render();
 chooseFilter();
 
+textFilter();
 unfocus();
 clickTwice();
 deleteChecked();
