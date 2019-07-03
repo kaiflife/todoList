@@ -4,8 +4,8 @@ let items = [];
 
 let idList = [];
 
-let filter = [];
-
+let filter = [[],[]];
+let filterCount = 0;
 let usedPage;
 let pageNumber = 1;
 let pageItems = 5; // Items on one page
@@ -27,11 +27,12 @@ const render = function() {
 
   // check active filter and filter items
   filteredItems();
+  filterCount = filter[0].length + filter[1].length;
 
   checkFilter();
 
 
-  let pageCount = Math.ceil((items.length - blockedItems() - filter.length)/pageItems);
+  let pageCount = Math.ceil((items.length - blockedItems() - filterCount)/pageItems);
 
   pageNumber>pageCount && pageCount > 0 ? pageNumber=pageCount : true;
 
@@ -63,17 +64,17 @@ const pagination = function(pageCount) {
 const itemsCounter = function() {
   $('.showAll p').empty();
 
-  let count = items.length - filter.length;
+  let count = items.length - filterCount;
   $('.showAll p').append(`Show All: ${count}`);
 
   let unchecked;
   uncheckedItems() === false ?  unchecked = 0 : unchecked = uncheckedItems();
 
-  count = items.length - unchecked;
+  count = items.length - unchecked - filter[0].length;
   $('.showChecked p').empty();
   $('.showChecked p').append(`Show Checked: ${count}`);
 
-  count = unchecked;
+  count = unchecked - filter[1].length;
   $('.showUnchecked p').empty();
   $('.showUnchecked p').append(`Show Unchecked: ${count}`);
 
@@ -100,7 +101,8 @@ const visibleItems = function () {
     if(counter === pageItems){
       return pages;
     }
-    if(!items[i].blocked && filter.indexOf(items[i].id)===-1){
+
+    if(!items[i].blocked && (filter[0].indexOf(items[i].id) ===-1 && filter[1].indexOf(items[i].id)===-1)){
       counter +=1;
       pages.push(i);
     }
@@ -116,13 +118,12 @@ const makeToDo = function() {
 };
 
 const filteredItems = function() {
-  filter = [];
+  filter = [[],[]];
   let text = $('#find-items').val();
   if(items.length > 0){
     for(i=0;i < items.length;i++){
       if(items[i].name.indexOf(text) ===-1){
-
-        filter.push(items[i].id);
+        items[i].checked === 'checked' ? filter[0].push(items[i].id) : filter[1].push(items[i].id);
       }
     }
   }

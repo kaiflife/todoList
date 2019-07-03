@@ -1,0 +1,4 @@
+
+
+  #1 checked unchecked + textFilter
+  checked and unchecked items wrong when using textFilter
