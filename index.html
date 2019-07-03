@@ -22,40 +22,48 @@
       <h2>My To Do List</h2>
 
       <div class="typer">
-          <input type="text" id="text-input" placeholder="Title..." name="task">
+          <input type="text" id="text-input" placeholder="New item..." name="task">
           <button class="button-add" id="addId">Add</button>
 
       </div>
 
     <div class="options">
-        <div class="check">
-            <div class="checkAll">
-                <input type="checkbox" class="input-checkAll" id="checkAll" name="Check/uncheck all">
-                <label style="margin:0;" for="checkAll">CheckAll</label>
+        <div class="filter-check">
+            <div class="check">
+                <div class="checkAll">
+                    <input type="checkbox" class="input-checkAll" id="checkAll" name="Check/uncheck all">
+                    <label style="margin:0;" for="checkAll">CheckAll</label>
+                </div>
+                <button class="button-delete" id="deleteId">Delete checked</button>
             </div>
-            <button class="button-delete" id="deleteId">Delete checked</button>
+
+            <div class="filters">
+                <div class='showAll active-filter'>
+                    <label   class='show-all'>
+                        <p>Show all</p>
+                    </label>
+                </div>
+
+                <div class='showChecked'>
+                    <label  class='show-checked'>
+                        <p>Show Checked</p>
+                    </label>
+                </div>
+
+                <div class='showUnchecked'>
+                    <label  class='show-unchecked'>
+                        <p>Show Unchecked</p>
+                    </label>
+                </div>
+
+            </div>
         </div>
 
-        <div class="filters">
-            <div class='showAll active-filter'>
-                <label   class='show-all'>
-                    <p>Show all</p>
-                </label>
-            </div>
 
-            <div class='showChecked'>
-                <label  class='show-checked'>
-                    <p>Show Checked</p>
-                </label>
-            </div>
-
-            <div class='showUnchecked'>
-                <label  class='show-unchecked'>
-                    <p>Show Unchecked</p>
-                </label>
-            </div>
-
+        <div class="text-filter">
+            <input type="text" id="find-item" placeholder="I can find item for you..." name="finder">
         </div>
+
 
     </div>
 
