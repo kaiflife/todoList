@@ -1,6 +1,0 @@
-
-
-  #1 pagination when filtered
-  when filter unchecked or checked and we add item, appera new page
-
-  need fix pagination

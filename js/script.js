@@ -7,6 +7,7 @@ let idList = [];
 let pageNumber = 1;
 let pageItems = 5;
 let activeFilter = $('.showAll');
+let focusItem;
 
 const render = function() {
   //clear ul
@@ -148,11 +149,42 @@ const idGener = function() {
   return randId;
 };
 
+const unfocus = function() {
+  $(document).focusout(function() {
+    log('unfocus');
+    if(focusItem !==undefined){
 
-const editItem = function() {
-  $('#')
+      if(!(focusItem.toggleClass( "focused", focusItem.is( ":focus" )))){
+        focusItem.attr('editing','false');
+      }
+    }
+  });
 };
 
+const clickTwice = function () {
+  let touchtime = 0;
+  $(document)
+    .on('click', '.editing', (e) => {
+    if (((new Date().getTime()) - touchtime) < 300) {
+      editItem(e)
+    }
+    touchtime = new Date().getTime();
+  });
+};
+
+
+const editItem = function(e) {
+
+  let target = e.target;
+  log(target);
+  log(target.hasClass('editing'));
+    if (target.hasClass('editing')) {
+      target.attr('contenteditable','true');
+      $(target).focus();
+      focusItem = focusItem.toggleClass( "focused", focusItem.is( ":focus" ));
+      log(focusItem);
+  }
+};
 //find ad index of item
 const findIndex = function(arr,name) {
   for(i=0;i<arr.length;i++) {
@@ -294,20 +326,20 @@ const changeFilter = function(newFilter) {
 };
 
 const chooseFilter = function () {
+  // filter All
   $('body').on('click', '.show-all', function() {
     filterAll();
     render();
 
   });
-
-
+  // filter Unchecked
   $('body').on('click', '.show-unchecked', function() {
     filterUnchecked();
 
     render();
 
   });
-
+  // filter Checked
   $('body').on('click', '.show-checked', function() {
     filterChecked();
 
@@ -409,7 +441,8 @@ const inputCheck = function() {
 render();
 chooseFilter();
 
-
+unfocus();
+clickTwice();
 deleteChecked();
 checkItem();
 checkAllItems();
