@@ -128,22 +128,19 @@ ul li.checked::before {
 }
 
 .page-number {
-    width: 10%;
+    width: 4%;
     color: #555;
     float: left;
     text-align: center;
     font-size: 20px;
     cursor: pointer;
     transition: 0.3s;
-    border-radius: 0;
-    margin-top: 2em;
-    margin-left: 1em;
-    margin-right: 1em;
-
-
+    border-radius: 2em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
     background: darkgray;
     border: none;
-    padding: 10px;
+    margin-bottom: 1em;
 }
 
 .active-page{
@@ -254,4 +251,8 @@ li p {
     padding: 0.5em;
     color: white;
     width: 100%;
+}
+
+.currentPage {
+    background: #f44336;
 }

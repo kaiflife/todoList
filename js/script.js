@@ -6,7 +6,7 @@ let idList = [];
 
 let filter = [];
 
-
+let usedPage;
 let pageNumber = 1;
 let pageItems = 5; // Items on one page
 let activeFilter = $('.showAll');
@@ -40,8 +40,14 @@ const render = function() {
 
   pagination(pageCount);
   itemsCounter();
+  currentPage();
 
 
+};
+
+const currentPage = function () {
+  // $(document).ready(function(){
+  $(`.page-number[value~=${pageNumber}]`).css("background-color", "yellow");
 };
 
 const log = function(item) {
@@ -56,16 +62,20 @@ const pagination = function(pageCount) {
 
 const itemsCounter = function() {
   $('.showAll p').empty();
-  $('.showAll p').append(`Show All: ${items.length}`);
+
+  let count = items.length - filter.length;
+  $('.showAll p').append(`Show All: ${count}`);
 
   let unchecked;
   uncheckedItems() === false ?  unchecked = 0 : unchecked = uncheckedItems();
 
-    $('.showChecked p').empty();
-  $('.showChecked p').append(`Show Checked: ${items.length - unchecked}`);
+  count = items.length - unchecked;
+  $('.showChecked p').empty();
+  $('.showChecked p').append(`Show Checked: ${count}`);
 
+  count = unchecked;
   $('.showUnchecked p').empty();
-  $('.showUnchecked p').append(`Show Unchecked: ${unchecked}`);
+  $('.showUnchecked p').append(`Show Unchecked: ${count}`);
 
 
 };
