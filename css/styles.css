@@ -202,7 +202,6 @@ label {
 
 .filters p {
     margin: 0;
-    margin-right: 1em;
     font-size: 16px;
 }
 
@@ -218,12 +217,15 @@ label {
     display: none;
 }
 
-.showAll {
+.filters div {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 6px;
-    
-    border-bottom: 2px white solid;
     width: 100%;
+}
+
+.active-filter {
+    color: deepskyblue;
+    border-bottom: 2px deepskyblue solid;
 }

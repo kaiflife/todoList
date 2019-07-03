@@ -6,21 +6,20 @@ let idList = [];
 
 let pageNumber = 1;
 let pageItems = 5;
+let activeFilter = $('filterAll');
 
 const render = function() {
   //clear ul
-  $('#list').empty()
+  $('#list').empty();
 
   //clear pagination
-  $('.pagination').empty()
+  $('.pagination').empty();
 
   let pageCount = Math.ceil((items.length - blockedItems())/pageItems);
 
   pageNumber>pageCount && pageCount > 0 ? pageNumber=pageCount : true;
 
   makeToDo();
-
-  console.log(items[0]);
 
   pagination(pageCount);
 };
@@ -45,11 +44,10 @@ const visiblePages = function () {
     }
   }
   return pages;
-}
+};
 
 const makeToDo = function() {
   let pages = visiblePages();
-  console.log(pages);
   for(i = 0 ; i < pages.length; i++){
     {appendLi(items[pages[i]].name,items[pages[i]].id,items[pages[i]].checked,items[pages[i]].editing)};
   }
@@ -95,7 +93,7 @@ const blockedItems = function () {
     }
   }
   return blockedCount;
-}
+};
 
 // Id generation
 const idGener = function() {
@@ -157,7 +155,7 @@ const addItem = function() {
           $('#checkAll').prop('checked',false);
           render();
         }
-      }     
+      }
   });
 };
 
@@ -248,7 +246,17 @@ const editItem = function() {
     });
 };
 
-const unblockAll = function() {
+const changeFilter = function(newFilter) {
+
+  activeFilter.removeClass('active-filter');
+
+  activeFilter = newFilter;
+  activeFilter.addClass('active-filter');
+
+
+};
+
+const filterAll = function() {
   $('body')
     .on('click', '.show-all', function() {
 
@@ -262,11 +270,13 @@ const unblockAll = function() {
           }
         }
       }
+
+      changeFilter($('.showAll'));
       render();
     });
 };
 
-const blockChecked = function() {
+const filterUnchecked = function() {
   $('body')
     .on('click', '.show-unchecked', function() {
 
@@ -284,12 +294,13 @@ const blockChecked = function() {
           }
         }
       }
+      changeFilter($('.showUnchecked'));
       render();
 
     });
 };
 
-const blockUnchecked = function() {
+const filterChecked = function() {
   $('body')
     .on('click', '.show-checked', function() {
       if (items.length > 0) {
@@ -308,6 +319,7 @@ const blockUnchecked = function() {
           }
         }
       }
+      changeFilter($('.showChecked'));
       render();
 
     });
@@ -352,9 +364,9 @@ const inputCheck = function() {
 };
 
 
-unblockAll();
-blockChecked();
-blockUnchecked();
+filterAll();
+filterChecked();
+filterUnchecked();
 
 editItem();
 deleteChecked();
