@@ -25,8 +25,9 @@ const render = function() {
   $('.pagination').empty();
 
   // check active filter and filter items
-  checkFilter();
   filteredItems();
+
+  checkFilter();
 
 
   let pageCount = Math.ceil((items.length - blockedItems() - filter.length)/pageItems);
@@ -88,7 +89,7 @@ const visibleItems = function () {
     if(counter === pageItems){
       return pages;
     }
-    if(!items[i].blocked && filter.indexOf(i)!==-1){
+    if(!items[i].blocked && filter.indexOf(items[i].id)===-1){
       counter +=1;
       pages.push(i);
     }
@@ -108,15 +109,12 @@ const filteredItems = function() {
   let text = $('#find-items').val();
   if(items.length > 0){
     for(i=0;i < items.length;i++){
-      if(items[i].name.indexOf(text) !==-1){
+      if(items[i].name.indexOf(text) ===-1){
 
-        filter.push(i);
+        filter.push(items[i].id);
       }
     }
   }
-
-  log(filter);
-  log(filter.length + ' indexes of filtered items');
   return true;
 };
 
@@ -128,13 +126,15 @@ const textFilter = function() {
       let text = $('#find-items').val();
       if(inputCheck(text))
       filteredItems();
+      render();
+
     });
   });
 
   $('#resetId').click(function() {
     $('#find-items').val('');
+    render();
   });
-  render();
 };
 
 // Change page
@@ -482,7 +482,6 @@ const inputCheck = function(text) {
   return false;
 };
 
-render();
 chooseFilter();
 
 textFilter();
@@ -494,5 +493,6 @@ checkAllItems();
 removeItem();
 addItem();
 choosePage();
+render();
 
 
