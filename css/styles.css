@@ -14,16 +14,12 @@ ul li {
     cursor: pointer;
     position: relative;
     padding: 12px 8px 12px 40px;
-    background: #eee;
     font-size: 18px;
     transition: 0.2s;
     padding-right: 2em;
 }
 
-/* Set all odd list items to a different color (zebra-stripes) */
-ul li:nth-child(odd) {
-    background: #f9f9f9;
-}
+
 
 /* Darker background-color on hover */
 ul li:hover {
@@ -164,6 +160,10 @@ input {
     height: 100%;
 }
 
+li {
+    background: cadetblue;
+    margin-bottom: 1em;
+}
 
 .check div:first-child {
     margin: 0;

@@ -12,9 +12,13 @@ const render = function() {
   //clear ul
   $('#list').empty();
 
+  //clear input
+  $('#text-input').val('');
+
   //clear pagination
   $('.pagination').empty();
 
+  // check active filter and filter items
   checkFilter();
 
 
@@ -27,6 +31,7 @@ const render = function() {
 
   pagination(pageCount);
   itemsCounter();
+
 
 };
 
@@ -144,6 +149,10 @@ const idGener = function() {
 };
 
 
+const editItem = function() {
+  $('#')
+};
+
 //find ad index of item
 const findIndex = function(arr,name) {
   for(i=0;i<arr.length;i++) {
@@ -160,9 +169,12 @@ const addItemProperty = function(name,id=idGener()) {
     name: name,
     id: id,
     checked: false,
-    blocked: false
+    blocked: false,
+    editing: false
   });
 };
+
+
 
 // Add items to array
 const addItem = function() {
@@ -238,11 +250,10 @@ const checkAllItems = function () {
 };
 
 // append to ul new li
-const appendLi = function (name,id,checked) {
+const appendLi = function (name,id,checked,editing) {
   $('#list')
-    .append($(`<li id=${id} contenteditable=true class="${checked +  ' item'}">${name}   <a href='#' `
+    .append($(`<li id=${id}  class="${checked +  ' item'}"><p contenteditable=${editing} class="editing">${name}</p>   <a href='#' `
       + `class='close' aria-hidden='true'>&times;</a>
-<a href='#' class='editItem' aria-hidden='true'>&#128736;</a>
 </li>`));
   return true;
 };
@@ -270,24 +281,7 @@ let checkItem = function () {
     });
 };
 
-const changeText = function() {
-  element.change(function() {
-    let content = $(this).html();
 
-    items[index].name = content;
-  });
-};
-
-
-const editItem = function() {
-  $('body')
-    .on('click', '#list .editItem', function() {
-      let id = Number($(this).parent().attr('id'));
-
-      let index = findIndex(idList,id);
-
-    });
-};
 
 const changeFilter = function(newFilter) {
 
@@ -415,7 +409,7 @@ const inputCheck = function() {
 render();
 chooseFilter();
 
-editItem();
+
 deleteChecked();
 checkItem();
 checkAllItems();

@@ -27,6 +27,10 @@ const inputCheck = function() {
     }
 }
 
+const log = function(item) {
+    console.log(item);
+};
+
 
 // work with each element
 let eachElement = function () {
