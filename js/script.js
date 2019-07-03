@@ -151,12 +151,10 @@ const idGener = function() {
 
 const unfocus = function() {
   $(document).focusout(function() {
-    log('unfocus');
     if(focusItem !==undefined){
+      focusItem.attributes.getNamedItem('contenteditable').
+        value = false;
 
-      if(!(focusItem.toggleClass( "focused", focusItem.is( ":focus" )))){
-        focusItem.attr('editing','false');
-      }
     }
   });
 };
@@ -176,13 +174,10 @@ const clickTwice = function () {
 const editItem = function(e) {
 
   let target = e.target;
-  log(target);
-  log(target.hasClass('editing'));
-    if (target.hasClass('editing')) {
-      target.attr('contenteditable','true');
+    if (target.className === 'editing') {
+      target.attributes.getNamedItem('contenteditable').value = true;
       $(target).focus();
-      focusItem = focusItem.toggleClass( "focused", focusItem.is( ":focus" ));
-      log(focusItem);
+      focusItem = document.activeElement;
   }
 };
 //find ad index of item
