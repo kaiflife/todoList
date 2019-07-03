@@ -1,8 +1,2 @@
 
 
-    #1 pagination
-    status: 7 elem, checked
-    one element go to page 2, but it should be one
-
-    #2 showAll work twice
-

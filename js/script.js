@@ -6,7 +6,7 @@ let idList = [];
 
 let pageNumber = 1;
 let pageItems = 5;
-let activeFilter = $('filterAll');
+let activeFilter = $('.showAll');
 
 const render = function() {
   //clear ul
@@ -80,7 +80,6 @@ const removeItem = function () {
       idList.splice(index,1); // remove id
       items.splice(index,1);// remove 1 element in array
 
-      $('#checkAll').prop('checked',false);
       render();
     });
 };
@@ -123,7 +122,6 @@ const addItemProperty = function(name,id=idGener()) {
     name: name,
     id: id,
     checked: false,
-    editing: false,
     blocked: false
   });
 };
@@ -202,9 +200,9 @@ const checkAllItems = function () {
 };
 
 // append to ul new li
-const appendLi = function (name,id,checked,editing) {
+const appendLi = function (name,id,checked) {
   $('#list')
-    .append($(`<li id=${id} contenteditable="${editing}" class="${checked + ' ' + editing + ' item'}">${name}   <a href='#' `
+    .append($(`<li id=${id} contenteditable=true class="${checked +  ' item'}">${name}   <a href='#' `
       + `class='close' aria-hidden='true'>&times;</a>
 <a href='#' class='editItem' aria-hidden='true'>&#128736;</a>
 </li>`));
@@ -241,7 +239,7 @@ const editItem = function() {
 
       let index = findIndex(idList,id);
 
-      items[index].editing === true ? items[index].editing = false : items[index].editing = true;
+
 
     });
 };
