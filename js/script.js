@@ -14,6 +14,7 @@ const render = function() {
 
   //clear pagination
   $('.pagination').empty();
+
   checkFilter();
 
 
@@ -24,8 +25,9 @@ const render = function() {
 
   makeToDo();
 
-  log(pageCount);
   pagination(pageCount);
+  itemsCounter();
+
 };
 
 const log = function(item) {
@@ -36,6 +38,22 @@ const pagination = function(pageCount) {
   for (i = 0; i < pageCount; i++) {
     $('.pagination').append(`<button id='#pageNumber' class="page-number" value="${i+1}">${i+1}</button>`);
   }
+};
+
+const itemsCounter = function() {
+  $('.showAll p').empty();
+  $('.showAll p').append(`Show All: ${items.length}`);
+
+  let unchecked;
+  uncheckedItems() === false ?  unchecked = 0 : unchecked = uncheckedItems();
+
+    $('.showChecked p').empty();
+  $('.showChecked p').append(`Show Checked: ${items.length - unchecked}`);
+
+  $('.showUnchecked p').empty();
+  $('.showUnchecked p').append(`Show Unchecked: ${unchecked}`);
+
+
 };
 
 const checkFilter = function() {
@@ -283,7 +301,6 @@ const changeFilter = function(newFilter) {
 
 const chooseFilter = function () {
   $('body').on('click', '.show-all', function() {
-    log('all');
     filterAll();
     render();
 
@@ -292,7 +309,6 @@ const chooseFilter = function () {
 
   $('body').on('click', '.show-unchecked', function() {
     filterUnchecked();
-    log('unchecked');
 
     render();
 
@@ -300,7 +316,6 @@ const chooseFilter = function () {
 
   $('body').on('click', '.show-checked', function() {
     filterChecked();
-    log('checked');
 
     render();
 
@@ -397,7 +412,7 @@ const inputCheck = function() {
   return false;
 };
 
-
+render();
 chooseFilter();
 
 editItem();
