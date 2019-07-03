@@ -185,6 +185,7 @@ const editItem = function(e) {
       focusItem = target;
   }
 };
+
 //find ad index of item
 const findIndex = function(arr,name) {
   for(i=0;i<arr.length;i++) {
@@ -284,7 +285,8 @@ const checkAllItems = function () {
 // append to ul new li
 const appendLi = function (name,id,checked,editing) {
   $('#list')
-    .append($(`<li id=${id}  class="${checked +  ' item'}"><p contenteditable=${editing} class="editing">${name}</p>   <a href='#' `
+    .append($(`<li id=${id}  class="${checked +  ' item'}">
+    <p contenteditable=${editing} class="editing">${name}</p>   <a href='#' `
       + `class='close' aria-hidden='true'>&times;</a>
 </li>`));
   return true;
