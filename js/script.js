@@ -152,6 +152,11 @@ const idGener = function() {
 const unfocus = function() {
   $(document).focusout(function() {
     if(focusItem !==undefined){
+
+      let id = Number(focusItem.parentNode.id);
+
+      let index = findIndex(idList,id);
+      items[index].name = $(focusItem).text();
       focusItem.attributes.getNamedItem('contenteditable').
         value = false;
 
@@ -177,7 +182,7 @@ const editItem = function(e) {
     if (target.className === 'editing') {
       target.attributes.getNamedItem('contenteditable').value = true;
       $(target).focus();
-      focusItem = document.activeElement;
+      focusItem = target;
   }
 };
 //find ad index of item
