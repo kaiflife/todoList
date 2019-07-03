@@ -16,7 +16,8 @@ ul li {
     padding: 12px 8px 12px 40px;
     font-size: 18px;
     transition: 0.2s;
-    padding-right: 2em;
+    align-items: center;
+    display: flex;
 }
 
 
@@ -49,9 +50,7 @@ ul li.checked::before {
 
 /* Style the close button */
 .close {
-    position: absolute;
-    right: 0;
-    top: 0;
+    margin-left: 1em;
     padding: 12px 16px 12px 16px;
 }
 
@@ -191,6 +190,9 @@ label {
     margin: 0;
 }
 
+li p {
+    margin: 1em 0;
+}
 
 .filters {
     display: flex;
@@ -244,4 +246,12 @@ label {
 .button-reset {
     background: white;
     border: white;
+}
+
+.editing {
+    background: blueviolet;
+    border-radius: 1em;
+    padding: 0.5em;
+    color: white;
+    width: 100%;
 }
