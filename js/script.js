@@ -14,15 +14,17 @@ const render = function() {
 
   //clear pagination
   $('.pagination').empty();
+  checkFilter();
+
 
   let pageCount = Math.ceil((items.length - blockedItems())/pageItems);
 
   pageNumber>pageCount && pageCount > 0 ? pageNumber=pageCount : true;
 
-  checkFilter();
 
   makeToDo();
 
+  log(pageCount);
   pagination(pageCount);
 };
 
