@@ -1,2 +1,5 @@
 
 
+    #1 when we on checked items and add unchecked
+    ucnehcked should't display
+
