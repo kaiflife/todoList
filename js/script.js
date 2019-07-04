@@ -63,11 +63,8 @@ const render = function() {
   currentPage();
 
   const checked = items.length - unchecked === items.length && items.length !== 0;
-  if( checked){
-    checkAllCheckbox.prop('checked',true);
-  } else {
-  checkAllCheckbox.prop('checked',false);
-  }
+  checked ? checkAllCheckbox.prop('checked',true) 
+          :checkAllCheckbox.prop('checked',false);
 };
 const currentPage = function () {
   pageNumberValue = $(`.page-number[value~=${pageNumber}]`);
@@ -111,12 +108,15 @@ const visibleItems = function () {
   let pages = [];
   let counter = 0;
   let i = (pageNumber-1) * pageItems;
+
   for(i; i < items.length; i++){
     if(counter === pageItems){
       return pages;
     }
 
-    if(!items[i].blocked && (filter[0].indexOf(items[i].id) ===-1 && filter[1].indexOf(items[i].id)===-1)){
+    if(!items[i].blocked 
+      && (filter[0].indexOf(items[i].id) ===-1 
+      && filter[1].indexOf(items[i].id)===-1)){
       counter +=1;
       pages.push(i);
     }
@@ -201,14 +201,12 @@ const removeItem = function () {
 const blockedItems = function () {
   let blockedCount = 0;
   if(items.length > 0){
-    for(let i = 0; i < items.length; i++) {
-      if(items[i].blocked) {blockedCount+=1;}
-    }
+    items.forEach(item => item.blocked ? blockedCount+=1 : false);
   }
   return blockedCount;
 };
 
-// Id generation
+// Id generation TRUBLECHANCE
 const idGener = function() {
   randId += 0.00000000000000000001;
   idList.unshift(randId);
@@ -242,6 +240,7 @@ const clickTwice = function () {
 };
 
 //find ad index of item
+
 const findIndex = function(arr,name) {
   for(let i=0;i<arr.length;i++) {
     if(Number(arr[i])===name){
@@ -357,21 +356,21 @@ const filterAll = function (){
       ? (item.blocked = false, $(`#${item.id}`).removeClass('blocked')) 
       : true
     });
-}
+};
 const filterUnchecked = function (){
     items.forEach( item => {
       item.checked 
       ? (item.blocked = true, $(`#${item.id}`).addClass('blocked')) 
       : (item.blocked = false, $(`#${item.id}`).removeClass('blocked'))
     });
-}
+};
 const filterChecked = function (){
     items.forEach( item => {
       !item.checked 
       ? (item.blocked = true, $(`#${item.id}`).addClass('blocked')) 
       : (item.blocked = false, $(`#${item.id}`).removeClass('blocked'))
     });
-}
+};
 
 const chooseFilter = function () {
 
