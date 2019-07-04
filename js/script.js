@@ -136,9 +136,22 @@ const visibleItems = function () {
 
 const makeToDo = function() {
   let pages = visibleItems();
+  let ulListAppend = ``;
+  let name;
+  let id;
+  let checked;
+  let editing;
   for(let i = 0 ; i < pages.length; i++){
-    {appendLi(items[pages[i]].name,items[pages[i]].id,items[pages[i]].checked,items[pages[i]].editing)};
+    name = items[pages[i]].name;
+    id = items[pages[i]].id;
+    checked = items[pages[i]].checked;
+    editing = items[pages[i]].editing;
+    ulListAppend += `<li id=${id}  class="${checked + ' item'}">
+    <p contenteditable=${editing} class="editing">${name}</p>   <a href='#'
+      + class='close' aria-hidden='true'>&times;</a>
+</li>`;
   }
+  ulList.html(ulListAppend);
 };
 
 const filteredItems = function() {
@@ -363,15 +376,6 @@ const checkAllItems = function () {
     });
 };
 
-// append to ul new li
-const appendLi = function (name,id,checked,editing) {
-  ulList
-    .append($(`<li id=${id}  class="${checked +  ' item'}">
-    <p contenteditable=${editing} class="editing">${name}</p>   <a href='#' `
-      + `class='close' aria-hidden='true'>&times;</a>
-</li>`));
-  return true;
-};
 
 //check one item
 let checkItem = function () {
