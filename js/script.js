@@ -10,7 +10,8 @@ let items = [],
   pageItems = 5, // Items on one page
   activeFilter = $('.showAll'), // (showAll,ShowChecked,ShowUnchecked)
   focusItem,
-  unchecked;
+  unchecked,
+pageNumberValue;
 
 const pAll = $('.showAll p'),
  pChecked = $('.showChecked p'),
@@ -71,15 +72,17 @@ const render = function() {
   checkAllCheckbox.prop('checked',false);
   }
 };
-const pageNumberValue = $(`.page-number[value~=${pageNumber}]`);
 const currentPage = function () {
+  pageNumberValue = $(`.page-number[value~=${pageNumber}]`);
   pageNumberValue.css("background-color", "yellow");
 };
 
 const pagination = function(pageCount) {
+  let buttonAppend = '';
   for (let i = 0; i < pageCount; i++) {
-    paginationButton.append(`<button id='#pageNumber' class="page-number" value="${i+1}">${i+1}</button>`);
+    buttonAppend += `<button id=\'#pageNumber\' class="page-number" value="${i+1}">${i+1}</button>`;
   }
+  paginationButton.html(buttonAppend);
 };
 
 
