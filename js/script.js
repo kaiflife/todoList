@@ -1,4 +1,4 @@
-"use strickt";
+"use strict";
 
 let items = [];
 
@@ -6,28 +6,37 @@ let idList = [];
 
 let filter = [[],[]]; //filter[0] checked, filter[1] unchecked
 let filterCount = 0;
-let usedPage;
 let pageNumber = 1;
 let pageItems = 5; // Items on one page
-let activeFilter = $('.showAll');
+let activeFilter = $('.showAll'); // (showAll,ShowChecked,ShowUnchecked)
 let focusItem;
 let unchecked;
+
+const pAll = $('.showAll p');
+const pChecked = $('.showChecked p');
+const pUnchecked = $('.showUnchecked p');
+const ulList = $('#list');
+const paginationButton = $('.pagination');
 
 
 const render = function() {
 
-  uncheckedItems() === false ?  unchecked = 0 : unchecked = uncheckedItems();
+  unchecked = uncheckedItems();
+
+  if(unchecked === false){
+    unchecked = 0;
+  }
 
   if(pageItems <= 0) pageNumber=1;
 
   //clear ul
-  $('#list').empty();
+  ulList.empty();
 
   //clear input
   $('#text-input').val('');
 
   //clear pagination
-  $('.pagination').empty();
+  paginationButton.empty();
 
   // check active filter and filter items
   filteredItems();
@@ -35,11 +44,11 @@ const render = function() {
 
   checkFilter();
 
-
   let pageCount = Math.ceil((items.length - blockedItems() - filterCount)/pageItems);
 
-  pageNumber>pageCount && pageCount > 0 ? pageNumber=pageCount : true;
-
+  if(pageNumber > pageCount && pageCount > 0) {
+    pageNumber = pageCount;
+  }
 
   makeToDo();
 
@@ -47,7 +56,8 @@ const render = function() {
   itemsCounter();
   currentPage();
 
-  if( items.length - unchecked === items.length && items.length !== 0){
+  const checked = items.length - unchecked === items.length && items.length !== 0;
+  if( checked){
     $('#checkAll').prop('checked',true);
   } else {
   $('#checkAll').prop('checked',false);
@@ -55,33 +65,31 @@ const render = function() {
 };
 
 const currentPage = function () {
-  // $(document).ready(function(){
   $(`.page-number[value~=${pageNumber}]`).css("background-color", "yellow");
 };
 
-const log = function(item) {
-  console.log(item);
-};
-
 const pagination = function(pageCount) {
-  for (i = 0; i < pageCount; i++) {
-    $('.pagination').append(`<button id='#pageNumber' class="page-number" value="${i+1}">${i+1}</button>`);
+  for (let i = 0; i < pageCount; i++) {
+    paginationButton.append(`<button id='#pageNumber' class="page-number" value="${i+1}">${i+1}</button>`);
   }
 };
 
+
+// Counter of items (All,checked,unchecked)
 const itemsCounter = function() {
-  $('.showAll p').empty();
+  pAll.empty();
 
   let count = items.length - filterCount;
-  $('.showAll p').append(`Show All: ${count}`);
+  pAll.append(`Show All: ${count}`);
 
   count = items.length - unchecked - filter[0].length;
-  $('.showChecked p').empty();
-  $('.showChecked p').append(`Show Checked: ${count}`);
+  pChecked.empty();
+  pChecked.append(`Show Checked: ${count}`);
 
   count = unchecked - filter[1].length;
-  $('.showUnchecked p').empty();
-  $('.showUnchecked p').append(`Show Unchecked: ${count}`);
+
+  pUnchecked.empty();
+  pUnchecked.append(`Show Unchecked: ${count}`);
 
 
 };
@@ -117,7 +125,7 @@ const visibleItems = function () {
 
 const makeToDo = function() {
   let pages = visibleItems();
-  for(i = 0 ; i < pages.length; i++){
+  for(let i = 0 ; i < pages.length; i++){
     {appendLi(items[pages[i]].name,items[pages[i]].id,items[pages[i]].checked,items[pages[i]].editing)};
   }
 };
@@ -126,7 +134,7 @@ const filteredItems = function() {
   filter = [[],[]];
   let text = $('#find-items').val();
   if(items.length > 0){
-    for(i=0;i < items.length;i++){
+    for(let i=0;i < items.length;i++){
       if(items[i].name.indexOf(text) ===-1){
         items[i].checked === 'checked' ? filter[0].push(items[i].id) : filter[1].push(items[i].id);
       }
@@ -187,7 +195,7 @@ const removeItem = function () {
 const blockedItems = function () {
   let blockedCount = 0;
   if(items.length > 0){
-    for(i = 0; i < items.length; i++) {
+    for(let i = 0; i < items.length; i++) {
       if(items[i].blocked) {blockedCount+=1;}
     }
   }
@@ -248,7 +256,7 @@ const editItem = function(e) {
 
 //find ad index of item
 const findIndex = function(arr,name) {
-  for(i=0;i<arr.length;i++) {
+  for(let i=0;i<arr.length;i++) {
     if(Number(arr[i])===name){
       return i;
     }
@@ -316,7 +324,7 @@ const deleteChecked = function() {
           render();
           return 0;
         }
-        for (i = 0; i < items.length; i++) {
+        for (let i = 0; i < items.length; i++) {
             let checked = items[i].checked;
             if (checked === 'checked') {
               idList.splice(i, 1); // remove id
@@ -347,14 +355,13 @@ const checkAllItems = function () {
 
 // append to ul new li
 const appendLi = function (name,id,checked,editing) {
-  $('#list')
+  ulList
     .append($(`<li id=${id}  class="${checked +  ' item'}">
     <p contenteditable=${editing} class="editing">${name}</p>   <a href='#' `
       + `class='close' aria-hidden='true'>&times;</a>
 </li>`));
   return true;
 };
-//
 
 //check one item
 let checkItem = function () {
@@ -415,7 +422,7 @@ const chooseFilter = function () {
 const filterAll = function() {
       if (items.length > 0) {
 
-        for (i = 0; i < items.length; i++) {
+        for (let i = 0; i < items.length; i++) {
           let blocked = items[i].blocked;
           if (blocked) {
             items[i].blocked = false;
@@ -430,7 +437,7 @@ const filterAll = function() {
 
 const filterUnchecked = function() {
       if (items.length > 0) {
-        for (i = 0; i < items.length; i++) {
+        for (let i = 0; i < items.length; i++) {
           let checked = items[i].checked;
           if (checked === 'checked') {
             items[i].blocked = true;
@@ -449,7 +456,7 @@ const filterUnchecked = function() {
 
 const filterChecked = function() {
       if (items.length > 0) {
-        for (i = 0; i < items.length; i++) {
+        for (let i = 0; i < items.length; i++) {
           let checked = items[i].checked;
           if (!checked) {
             items[i].blocked = true;
