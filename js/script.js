@@ -17,6 +17,14 @@ const pChecked = $('.showChecked p');
 const pUnchecked = $('.showUnchecked p');
 const ulList = $('#list');
 const paginationButton = $('.pagination');
+const findItemsButton = $('#find-items');
+const resetIdButton = $('#resetId');
+const textInput = $('#text-input');
+const buttonAdd = $('.button-add');
+const filterShowAll = $('.showAll');
+const filterShowUnchecked = $('.showUnchecked');
+const filterShowChecked = $('.showChecked');
+const checkAllCheckbox = $('#checkAll');
 
 
 const render = function() {
@@ -33,7 +41,7 @@ const render = function() {
   ulList.empty();
 
   //clear input
-  $('#text-input').val('');
+  textInput.val('');
 
   //clear pagination
   paginationButton.empty();
@@ -58,14 +66,14 @@ const render = function() {
 
   const checked = items.length - unchecked === items.length && items.length !== 0;
   if( checked){
-    $('#checkAll').prop('checked',true);
+    checkAllCheckbox.prop('checked',true);
   } else {
-  $('#checkAll').prop('checked',false);
+  checkAllCheckbox.prop('checked',false);
   }
 };
-
+const pageNumberValue = $(`.page-number[value~=${pageNumber}]`);
 const currentPage = function () {
-  $(`.page-number[value~=${pageNumber}]`).css("background-color", "yellow");
+  pageNumberValue.css("background-color", "yellow");
 };
 
 const pagination = function(pageCount) {
@@ -132,7 +140,7 @@ const makeToDo = function() {
 
 const filteredItems = function() {
   filter = [[],[]];
-  let text = $('#find-items').val();
+  let text = findItemsButton.val();
   if(items.length > 0){
     for(let i=0;i < items.length;i++){
       if(items[i].name.indexOf(text) ===-1){
@@ -145,10 +153,10 @@ const filteredItems = function() {
 
 const textFilter = function() {
 
-  $('#find-items').focus(function() {
+  findItemsButton.focus(function() {
 
-    $('#find-items').keyup(function() {
-      let text = $('#find-items').val();
+    findItemsButton.keyup(function() {
+      let text = findItemsButton.val();
       if(inputCheck(text))
       filteredItems();
       render();
@@ -156,8 +164,8 @@ const textFilter = function() {
     });
   });
 
-  $('#resetId').click(function() {
-    $('#find-items').val('');
+  resetIdButton.click(function() {
+    findItemsButton.val('');
     render();
   });
 };
@@ -276,19 +284,18 @@ const addItemProperty = function(name,id=idGener()) {
 };
 
 
-
 // Add items to array
 const addItem = function() {
 
   // append item when click button-add
   $(document)
     .on('click', '.button-add', () => {
-      let text = $('#text-input[name=task]').val()
+      let text = textInput.val();
 
       if (inputCheck(text)) {
-        $('.button-add').blur();
+        buttonAdd.blur();
         addItemProperty(text);
-        $('#checkAll').prop('checked',false);
+        checkAllCheckbox.prop('checked',false);
         render();
       }
     });
@@ -300,11 +307,11 @@ const addItem = function() {
     // Enter pressed
     if (keycode === 13) {
 
-      let text = $('#text-input[name=task]').val()
+      let text = textInput.val()
       // If input not empty
         if (inputCheck(text)) {
           addItemProperty(text);
-          $('#checkAll').prop('checked',false);
+          checkAllCheckbox.prop('checked',false);
           render();
         }
       }
@@ -432,7 +439,7 @@ const filterAll = function() {
       }
 
 
-      changeFilter($('.showAll'));
+      changeFilter(filterShowAll);
 };
 
 const filterUnchecked = function() {
@@ -450,9 +457,10 @@ const filterUnchecked = function() {
           }
         }
       }
-      changeFilter($('.showUnchecked'));
+      changeFilter(filterShowUnchecked);
 
 };
+
 
 const filterChecked = function() {
       if (items.length > 0) {
@@ -468,7 +476,7 @@ const filterChecked = function() {
           }
         }
       }
-      changeFilter($('.showChecked'));
+      changeFilter(filterShowChecked);
 };
 
 
