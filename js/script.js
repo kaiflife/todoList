@@ -1,30 +1,30 @@
 "use strict";
 
-let items = [];
+let items = [],
 
-let idList = [];
+  idList = [],
 
-let filter = [[],[]]; //filter[0] checked, filter[1] unchecked
-let filterCount = 0;
-let pageNumber = 1;
-let pageItems = 5; // Items on one page
-let activeFilter = $('.showAll'); // (showAll,ShowChecked,ShowUnchecked)
-let focusItem;
-let unchecked;
+  filter = [[],[]], //filter[0] checked, filter[1] unchecked
+  filterCount = 0,
+  pageNumber = 1,
+  pageItems = 5, // Items on one page
+  activeFilter = $('.showAll'), // (showAll,ShowChecked,ShowUnchecked)
+  focusItem,
+  unchecked;
 
-const pAll = $('.showAll p');
-const pChecked = $('.showChecked p');
-const pUnchecked = $('.showUnchecked p');
-const ulList = $('#list');
-const paginationButton = $('.pagination');
-const findItemsButton = $('#find-items');
-const resetIdButton = $('#resetId');
-const textInput = $('#text-input');
-const buttonAdd = $('.button-add');
-const filterShowAll = $('.showAll');
-const filterShowUnchecked = $('.showUnchecked');
-const filterShowChecked = $('.showChecked');
-const checkAllCheckbox = $('#checkAll');
+const pAll = $('.showAll p'),
+ pChecked = $('.showChecked p'),
+ pUnchecked = $('.showUnchecked p'),
+ ulList = $('#list'),
+ paginationButton = $('.pagination'),
+ findItemsButton = $('#find-items'),
+ resetIdButton = $('#resetId'),
+ textInput = $('#text-input'),
+ buttonAdd = $('.button-add'),
+ filterShowAll = $('.showAll'),
+ filterShowUnchecked = $('.showUnchecked'),
+ filterShowChecked = $('.showChecked'),
+ checkAllCheckbox = $('#checkAll');
 
 
 const render = function() {
