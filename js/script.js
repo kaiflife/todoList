@@ -21,7 +21,6 @@ const pAll = $('.showAll p'),
  findItemsButton = $('#find-items'),
  resetIdButton = $('#resetId'),
  textInput = $('#text-input'),
- buttonAdd = $('.button-add'),
  filterShowAll = $('.showAll'),
  filterShowUnchecked = $('.showUnchecked'),
  filterShowChecked = $('.showChecked'),
@@ -147,9 +146,10 @@ const makeToDo = function() {
     checked = items[pages[i]].checked;
     editing = items[pages[i]].editing;
     ulListAppend += `<li id=${id}  class="${checked + ' item'}">
-    <p contenteditable=${editing} class="editing">${name}</p>   <a href='#'
+    <input type="checkbox" id="checkItem" class="check-item"  ${checked+'='}><p contenteditable=${editing} class="editing">${name}</p>   <a href='#'
       + class='close' aria-hidden='true'>&times;</a>
 </li>`;
+
   }
   ulList.html(ulListAppend);
 };
@@ -186,18 +186,10 @@ const textFilter = function() {
   });
 };
 
-// Change page
 const choosePage = function() {
-  $('body')
-    .click(function(e) {
-
-
-      let target = $(e.target);
-
-        if(target[0].id === '#pageNumber'){
-          pageNumber = target[0].value;
-          render();
-        }
+    $(document).on ("click", `.page-number`, function () {
+      pageNumber = $(this).val();
+      render();
   });
 };
 
@@ -238,45 +230,32 @@ const idGener = function() {
 };
 
 const unfocus = function() {
-  $(document).focusout(function() {
+  $('body').on('focusout','.editing',function() {
     if(focusItem !==undefined){
 
-      let id = Number(focusItem.parentNode.id);
+      let id = Number(focusItem.parent().attr('id'));
 
       let index = findIndex(idList,id);
-      let text = $(focusItem).text();
+      let text = focusItem.text();
       if(inputCheck(text)){
-        items[index].name = $(focusItem).text();
+        items[index].name = focusItem.text();
       }
-      focusItem.attributes.getNamedItem('contenteditable').
-        value = false;
+      focusItem.attr('contenteditable', 'false');
       render();
-
     }
   });
 };
 
+
+//dbl click dosnt work
 const clickTwice = function () {
-  let touchtime = 0;
-  $(document)
-    .on('click', '.editing', (e) => {
-    if (((new Date().getTime()) - touchtime) < 300) {
-      editItem(e)
-    }
-    touchtime = new Date().getTime();
+  $('body').on('click', '.editing', function () {
+    $(this).attr('contenteditable', 'true');
+    $(this).focus();
+    focusItem = $(this);
   });
 };
 
-
-const editItem = function(e) {
-
-  let target = e.target;
-    if (target.className === 'editing') {
-      target.attributes.getNamedItem('contenteditable').value = true;
-      $(target).focus();
-      focusItem = target;
-  }
-};
 
 //find ad index of item
 const findIndex = function(arr,name) {
@@ -293,12 +272,19 @@ const addItemProperty = function(name,id=idGener()) {
   items.unshift({
     name: name,
     id: id,
-    checked: false,
+    checked: '',
     blocked: false,
     editing: false
   });
 };
 
+const createItem = function(text) {
+  if (inputCheck(text)) {
+    addItemProperty(text);
+    checkAllCheckbox.prop('checked',false);
+    render();
+  }
+};
 
 // Add items to array
 const addItem = function() {
@@ -308,12 +294,8 @@ const addItem = function() {
     .on('click', '.button-add', () => {
       let text = textInput.val();
 
-      if (inputCheck(text)) {
-        buttonAdd.blur();
-        addItemProperty(text);
-        checkAllCheckbox.prop('checked',false);
-        render();
-      }
+      createItem(text);
+
     });
 
   //  Append item with ENTER button
@@ -323,13 +305,9 @@ const addItem = function() {
     // Enter pressed
     if (keycode === 13) {
 
-      let text = textInput.val()
+      let text = textInput.val();
       // If input not empty
-        if (inputCheck(text)) {
-          addItemProperty(text);
-          checkAllCheckbox.prop('checked',false);
-          render();
-        }
+        createItem(text);
       }
   });
 };
@@ -380,21 +358,20 @@ const checkAllItems = function () {
 //check one item
 let checkItem = function () {
   $('body')
-    .click(function(e) {
+    .on('click','.check-item', function() {
 
-      let target = $(e.target);
-        if(target[0].tagName === 'LI'){
-          let id = Number(target[0].id);
 
-          let index = findIndex(idList, id);
+        let id = Number($(this).parent().attr('id'));
 
-          if (items[index].checked === 'checked') {
-            items[index].checked = '';
-          } else {
-            items[index].checked = 'checked';
-          }
-          render();
+        let index = findIndex(idList, id);
+
+        if (items[index].checked === 'checked') {
+
+          items[index].checked = '';
+        } else {
+          items[index].checked = 'checked';
         }
+        render();
     });
 };
 
