@@ -4,15 +4,19 @@ let items = [];
 
 let idList = [];
 
-let filter = [[],[]];
+let filter = [[],[]]; //filter[0] checked, filter[1] unchecked
 let filterCount = 0;
 let usedPage;
 let pageNumber = 1;
 let pageItems = 5; // Items on one page
 let activeFilter = $('.showAll');
 let focusItem;
+let unchecked;
+
 
 const render = function() {
+
+  uncheckedItems() === false ?  unchecked = 0 : unchecked = uncheckedItems();
 
   if(pageItems <= 0) pageNumber=1;
 
@@ -43,7 +47,11 @@ const render = function() {
   itemsCounter();
   currentPage();
 
-
+  if( items.length - unchecked === items.length && items.length !== 0){
+    $('#checkAll').prop('checked',true);
+  } else {
+  $('#checkAll').prop('checked',false);
+  }
 };
 
 const currentPage = function () {
@@ -66,9 +74,6 @@ const itemsCounter = function() {
 
   let count = items.length - filterCount;
   $('.showAll p').append(`Show All: ${count}`);
-
-  let unchecked;
-  uncheckedItems() === false ?  unchecked = 0 : unchecked = uncheckedItems();
 
   count = items.length - unchecked - filter[0].length;
   $('.showChecked p').empty();
@@ -207,9 +212,13 @@ const unfocus = function() {
       let id = Number(focusItem.parentNode.id);
 
       let index = findIndex(idList,id);
-      items[index].name = $(focusItem).text();
+      let text = $(focusItem).text();
+      if(inputCheck(text)){
+        items[index].name = $(focusItem).text();
+      }
       focusItem.attributes.getNamedItem('contenteditable').
         value = false;
+      render();
 
     }
   });
@@ -363,7 +372,6 @@ let checkItem = function () {
           } else {
             items[index].checked = 'checked';
           }
-          $('#checkAll').prop('checked',false);
           render();
         }
     });
