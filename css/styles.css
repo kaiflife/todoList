@@ -240,4 +240,6 @@ li p {
 
 .check-item {
     margin: 0 1em;
+    cursor: pointer;
+    
 }
