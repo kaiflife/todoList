@@ -40,7 +40,6 @@ const render = function() {
   //clear pagination
   paginationButton.empty();
 
-  console.log(blockedItems());
   let pageCount = Math.ceil(blockedItems() / pageItems);
 
   if(pageNumber > pageCount && pageCount > 0) {
@@ -88,46 +87,44 @@ const itemsCounter = function() {
 
 const filterValues = () => {
 
+  let pages = [];
   if(activeFilter.hasClass('showAll')) {
-    return items.map( (item,i) => i);
+    pages = items.map( (item,i) => i);
   }
-  if(activeFilter.hasClass('showChecked')) {
-    return items.filter(item =>
-      item.checked === 'checked');
+  else if(activeFilter.hasClass('showChecked')) {
+    items.forEach((item, i) => {
+      if (item.checked === 'checked') {
+        pages.push(i);
+      }
+    });
   }
-  if(activeFilter.hasClass('showAll')) {
-    return items.filter(item =>
-      item.checked !== 'checked');
-  }
-  if(activeFilter.hasClass('showChecked'))
-    return numbers.filter(number =>
-      item.checked !== 'checked');
+  else if(activeFilter.hasClass('showChecked')) {
+      items.forEach((item, i) => {
+        if (item.checked !== 'checked') {
+          pages.push(i);
+        }
+      });
+    }
+  return pages;
 };
 
 
 const visibleItems = function () {
-  let pages = [];
-  let counter = 0;
-  let i = (pageNumber-1) * pageItems;
-  for(i; i < items.length; i++){
-    if(counter === pageItems){
-      return pages;
-    }
-
-    if(activeFilter.hasClass('showAll')){
-      pages.push(i);
-    } else if(activeFilter.hasClass('showChecked')){
-      if(items[i].checked){
-        pages.push(i);
+  if(items.length > 0){
+    let pages = filterValues(); // index of items checked/unchecked [0,3,5] etc
+    let renderItems = [];
+    let counter = 0;
+    for(i;i < pages.length;i++){
+      if(counter === pageItems){
+        return renderItems;
       }
-    } else if (activeFilter.hasClass('showUnchecked')){
-      if(!items[i].checked) {
-        pages.push(i);
+      if(pages.indexOf(i)){
+        renderItems.push(items[i]);
+        counter +=1;
       }
     }
-    counter +=1;
+    return renderItems;
   }
-  return pages;
 };
 
 const makeToDo = function() {
@@ -163,7 +160,7 @@ const removeItem = function () {
   $('body')
     .on('click', '#list .close', function() {
       let id = Number($(this).parent().attr('id'));
-      let index = findIndex(idList,id);
+      let index = idList.indexOf(id);
       idList.splice(index,1); // remove id
       items.splice(index,1);// remove 1 element in array
 
@@ -197,7 +194,8 @@ const unfocus = function() {
 
       let id = Number(focusItem.parent().attr('id'));
 
-      let index = findIndex(idList,id);
+      let index = idList.indexOf(id);
+
       let text = focusItem.text();
       if(inputCheck(text)){
         items[index].name = focusItem.text();
@@ -217,14 +215,6 @@ const clickTwice = function () {
   });
 };
 
-//find ad index of item
-const findIndex = function(arr,name) {
-  for(let i=0;i<arr.length;i++) {
-    if(Number(arr[i])===name){
-      return i;
-    }
-  }
-};
 
 // add properties to array
 const addItemProperty = function(name,id=idGener()) {
@@ -309,7 +299,8 @@ let checkItem = function () {
   $('body')
     .on('click','.check-item', function() {
       let id = Number($(this).parent().attr('id'));
-      let index = findIndex(idList, id);
+      let index = idList.indexOf(id);
+
       if (items[index].checked) {
         items[index].checked = false;
       } else {
