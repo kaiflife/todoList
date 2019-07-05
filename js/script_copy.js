@@ -9,7 +9,6 @@ let items = [],
   pageItems = 5, // Items on one page
   activeFilter = $('.showAll'), // (showAll,ShowChecked,ShowUnchecked)
   focusItem,
-  unchecked,
   pageNumberValue;
 
 const pAll = $('.showAll p'),
@@ -25,12 +24,6 @@ const pAll = $('.showAll p'),
 
 const render = function() {
 
-  unchecked = uncheckedItems();
-
-  if(unchecked === false){
-    unchecked = 0;
-  }
-
   if(pageItems <= 0) pageNumber=1;
 
   //clear ul
@@ -43,17 +36,19 @@ const render = function() {
   paginationButton.empty();
 
   let pageCount = Math.ceil(blockedItems() / pageItems);
+  console.log(pageCount);
 
   if(pageNumber > pageCount && pageCount > 0) {
     pageNumber = pageCount;
   }
+
 
   makeToDo();
   pagination(pageCount);
   itemsCounter();
   currentPage();
 
-  const checked = items.length - unchecked === items.length && items.length !== 0;
+  const checked = items.length - uncheckedItems() === items.length && items.length !== 0;
   if( checked){
     checkAllCheckbox.prop('checked',true);
   } else {
@@ -75,6 +70,11 @@ const pagination = function(pageCount) {
 
 // Counter of items (All,checked,unchecked)
 const itemsCounter = function() {
+
+  let unchecked = uncheckedItems();
+  if(unchecked !== false){
+    unchecked = 0;
+  }
   pAll.empty();
   let count = items.length;
   pAll.append(`Show All: ${count}`);
@@ -86,50 +86,55 @@ const itemsCounter = function() {
   pUnchecked.append(`Show Unchecked: ${count}`);
 };
 
-const visibleItems = function () {
-  let pages = [];
-  let counter = 0;
-  let i = (pageNumber-1) * pageItems;
-  for(i; i < items.length; i++){
-    if(counter === pageItems){
-      return pages;
-    }
-
-    if(activeFilter.hasClass('showAll')){
-      pages.push(i);
+const filterValues = () => {
+    if(activeFilter.hasClass('showAll')) {
+      return items;
     } else if(activeFilter.hasClass('showChecked')){
-      if(items[i].checked === 'checked'){
-        pages.push(i);
-      }
-    } else if (activeFilter.hasClass('showUnchecked')){
-      if(items[i].checked !== 'checked') {
-        pages.push(i);
+      return items.filter(item => {
+        if(item.checked === 'checked') return item;
+      });
+    } else if(activeFilter.hasClass('showUnchecked')){
+      return items.filter(item =>{
+        if(item.checked !== 'checked') return item;
+      });
+    }
+  };
+
+const visibleItems = function () {
+  if(items.length > 0){
+    let pages = filterValues();
+    let i = (pageNumber-1) * pageItems;
+    if(pageItems < pages.length){
+      for(i; i < pageItems*pageNumber; i++){ // work incorrectly
+        pages.pop();
       }
     }
-    counter +=1;
 
+    return pages;
   }
-  return pages;
+
 };
 
 const makeToDo = function() {
-  let pages = visibleItems();
-  let ulListAppend = ``;
-  let name;
-  let id;
-  let checked;
-  let editing;
-  for(let i = 0 ; i < pages.length; i++){
-    name = items[pages[i]].name;
-    id = items[pages[i]].id;
-    checked = items[pages[i]].checked;
-    editing = items[pages[i]].editing;
-    ulListAppend += `<li id=${id}  class="${checked + ' item'}">
+  if(items.length > 0){
+    let pages = visibleItems();
+    let ulListAppend = ``;
+    let name;
+    let id;
+    let checked;
+    let editing;
+    for(let i = 0 ; i < pages.length; i++){
+      name = pages[i].name;
+      id = pages[i].id;
+      checked = pages[i].checked;
+      editing = pages[i].editing;
+      ulListAppend += `<li id=${id}  class="${checked + ' item'}">
     <input type="checkbox" id="checkItem" class="check-item"  ${checked+'='}><p contenteditable=${editing} class="editing">${name}</p>   <a href='#'
       + class='close' aria-hidden='true'>&times;</a>
 </li>`;
+    }
+    ulList.html(ulListAppend);
   }
-  ulList.html(ulListAppend);
 };
 
 
@@ -158,9 +163,12 @@ const blockedItems = function () {
     if(activeFilter.hasClass('showAll')) {
       return items.length;
     } else if(activeFilter.hasClass('showChecked')){
+      console.log(items.length - uncheckedItems());
+
       return items.length - uncheckedItems();
     }
     else if(activeFilter.hasClass('showUnchecked')){
+      console.log(uncheckedItems());
       return uncheckedItems();
     }
   }
