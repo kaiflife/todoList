@@ -45,11 +45,14 @@ const render = function() {
   if(pageNumber > pageCount && pageCount > 0) {
     pageNumber = pageCount;
   }
+  if(items.length > 0){
+    makeToDo();
+    pagination(pageCount);
+    currentPage();
 
-  makeToDo();
-  pagination(pageCount);
+  }
+
   itemsCounter();
-  currentPage();
 
   const checked = items.length - unchecked === items.length && items.length !== 0;
   if(checked){
@@ -93,14 +96,15 @@ const filterValues = () => {
   }
   else if(activeFilter.hasClass('showChecked')) {
     items.forEach((item, i) => {
-      if (item.checked === 'checked') {
+      if (item.checked) {
         pages.push(i);
       }
     });
   }
-  else if(activeFilter.hasClass('showChecked')) {
+  else if(activeFilter.hasClass('showUnchecked')) {
       items.forEach((item, i) => {
-        if (item.checked !== 'checked') {
+        if (!item.checked) {
+
           pages.push(i);
         }
       });
@@ -110,21 +114,20 @@ const filterValues = () => {
 
 
 const visibleItems = function () {
-  if(items.length > 0){
     let pages = filterValues(); // index of items checked/unchecked [0,3,5] etc
     let renderItems = [];
     let counter = 0;
-    for(i;i < pages.length;i++){
+    let i = (pageNumber-1)*pageItems;
+    for(i;i < items.length;i++){
       if(counter === pageItems){
         return renderItems;
       }
-      if(pages.indexOf(i)){
+      if(pages.indexOf(i) !== -1){
         renderItems.push(items[i]);
         counter +=1;
       }
     }
     return renderItems;
-  }
 };
 
 const makeToDo = function() {
@@ -135,10 +138,10 @@ const makeToDo = function() {
   let checked;
   let editing;
   for(let i = 0 ; i < pages.length; i++){
-    name = items[pages[i]].name;
-    id = items[pages[i]].id;
-    items[pages[i]].checked ? checked = 'checked' : checked='';
-    editing = items[pages[i]].editing;
+    name = pages[i].name;
+    id = pages[i].id;
+    pages[i].checked ? checked = 'checked' : checked='';
+    editing = pages[i].editing;
     ulListAppend += `<li id=${id}  class="${checked + ' item'}">
     <input type="checkbox" id="checkItem" class="check-item"  ${checked+'='}><p contenteditable=${editing} class="editing">${name}</p>   <a href='#'
       + class='close' aria-hidden='true'>&times;</a>
