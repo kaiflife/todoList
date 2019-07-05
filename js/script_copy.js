@@ -5,7 +5,6 @@ let items = [],
   idList = [],
 
   randId = 0.00000000000000000001 ,
-  filterCount = 0,
   pageNumber = 1,
   pageItems = 5, // Items on one page
   activeFilter = $('.showAll'), // (showAll,ShowChecked,ShowUnchecked)
@@ -18,14 +17,11 @@ const pAll = $('.showAll p'),
   pUnchecked = $('.showUnchecked p'),
   ulList = $('#list'),
   paginationButton = $('.pagination'),
-  findItemsButton = $('#find-items'),
-  resetIdButton = $('#resetId'),
   textInput = $('#text-input'),
   filterShowAll = $('.showAll'),
   filterShowUnchecked = $('.showUnchecked'),
   filterShowChecked = $('.showChecked'),
   checkAllCheckbox = $('#checkAll');
-
 
 const render = function() {
 
@@ -49,6 +45,7 @@ const render = function() {
   // check active filter and filter items
   checkFilter();
   let pageCount = Math.ceil(blockedItems() / pageItems);
+  console.log(blockedItems());
 
   if(pageNumber > pageCount && pageCount > 0) {
     pageNumber = pageCount;
@@ -178,7 +175,7 @@ const blockedItems = function () {
         return items.length - uncheckedItems();
       }
       else if(activeFilter.hasClass('showUnchecked')){
-        return uncheckedItems;
+        return uncheckedItems();
       }
     }
 };
