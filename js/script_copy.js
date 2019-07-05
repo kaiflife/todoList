@@ -42,10 +42,7 @@ const render = function() {
   //clear pagination
   paginationButton.empty();
 
-  // check active filter and filter items
-  checkFilter();
   let pageCount = Math.ceil(blockedItems() / pageItems);
-  console.log(blockedItems());
 
   if(pageNumber > pageCount && pageCount > 0) {
     pageNumber = pageCount;
@@ -89,18 +86,6 @@ const itemsCounter = function() {
   pUnchecked.append(`Show Unchecked: ${count}`);
 };
 
-const checkFilter = function() {
-  if(activeFilter.hasClass('showAll')){
-    return 'all';
-  }
-  else if (activeFilter.hasClass('showChecked')){
-    return 'checked';
-  }
-  else if (activeFilter.hasClass('showUnchecked')){
-    return 'unchecked';
-  }
-};
-
 const visibleItems = function () {
   let pages = [];
   let counter = 0;
@@ -110,12 +95,13 @@ const visibleItems = function () {
       return pages;
     }
 
-    if(checkFilter() === 'all'){
+    if(activeFilter.hasClass('showAll')){
       pages.push(i);
-    } else if(checkFilter() === 'checked'){
+    } else if(activeFilter.hasClass('showChecked')){
       if(items[i].checked === 'checked'){
+        pages.push(i);
       }
-    } else if (checkFilter() === 'unchecked'){
+    } else if (activeFilter.hasClass('showUnchecked')){
       if(items[i].checked !== 'checked') {
         pages.push(i);
       }
@@ -169,15 +155,15 @@ const removeItem = function () {
 
 const blockedItems = function () {
   if(items.length > 0){
-      if(activeFilter.hasClass('showAll')) {
-        return items.length;
-      } else if(activeFilter.hasClass('showChecked')){
-        return items.length - uncheckedItems();
-      }
-      else if(activeFilter.hasClass('showUnchecked')){
-        return uncheckedItems();
-      }
+    if(activeFilter.hasClass('showAll')) {
+      return items.length;
+    } else if(activeFilter.hasClass('showChecked')){
+      return items.length - uncheckedItems();
     }
+    else if(activeFilter.hasClass('showUnchecked')){
+      return uncheckedItems();
+    }
+  }
 };
 
 // Id generation
