@@ -27,7 +27,6 @@ const pAll = $('.showAll p'),
  filterShowChecked = $('.showChecked'),
  checkAllCheckbox = $('#checkAll');
 
-
 const render = function() {
 
   unchecked = uncheckedItems();
@@ -109,10 +108,9 @@ const visibleItems = function () {
   let counter = 0;
   let i = (pageNumber-1) * pageItems;
 
-  for(i; i < items.length; i++){
-    if(counter === pageItems){
-      return pages;
-    }
+  items.forEach(() => {
+    if(counter === pageItems)return pages;
+  });
 
     if(!items[i].blocked 
       && (filter[0].indexOf(items[i].id) ===-1 
@@ -120,7 +118,6 @@ const visibleItems = function () {
       counter +=1;
       pages.push(i);
     }
-  }
   return pages;
 };
 
@@ -163,10 +160,8 @@ const textFilter = function() {
   findItemsButton.focus(function() {
     findItemsButton.keyup(function() {
       let text = findItemsButton.val();
-      if(inputCheck(text))
-      filteredItems();
+      if(inputCheck(text)) filteredItems();
       render();
-
     });
   });
   resetIdButton.click(function() {
@@ -216,9 +211,7 @@ const idGener = function() {
 const unfocus = function() {
   $('body').on('focusout','.editing',function() {
     if(focusItem !==undefined){
-
       let id = Number(focusItem.parent().attr('id'));
-
       let index = findIndex(idList,id);
       let text = focusItem.text();
       if(inputCheck(text)){
@@ -243,9 +236,7 @@ const clickTwice = function () {
 
 const findIndex = function(arr,name) {
   for(let i=0;i<arr.length;i++) {
-    if(Number(arr[i])===name){
-      return i;
-    }
+    if(Number(arr[i])===name)return i;
   }
 };
 
@@ -285,8 +276,6 @@ const addItem = function() {
     // Enter pressed
     if (keycode === 13) {
       let text = textInput.val();
-
-      // If input not empty
         createItem(text);
       }
   });
@@ -302,9 +291,7 @@ const deleteChecked = function() {
           render();
           return 0;
         }
-
-        let arr = [];
-        idList = [];
+        let arr = []; idList = [];
         items.forEach((item,i) => {if(item.checked !== 'checked'){
           arr.push(item);
           idList.push(item.id);
