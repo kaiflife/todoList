@@ -5,27 +5,27 @@ let items = [],
   idList = [],
 
   randId = 0.00000000000000000001 ,
-  filter = [[],[]], //filter[0] checked, filter[1] unchecked
   filterCount = 0,
   pageNumber = 1,
   pageItems = 5, // Items on one page
   activeFilter = $('.showAll'), // (showAll,ShowChecked,ShowUnchecked)
   focusItem,
   unchecked,
-pageNumberValue;
+  pageNumberValue;
 
 const pAll = $('.showAll p'),
- pChecked = $('.showChecked p'),
- pUnchecked = $('.showUnchecked p'),
- ulList = $('#list'),
- paginationButton = $('.pagination'),
- findItemsButton = $('#find-items'),
- resetIdButton = $('#resetId'),
- textInput = $('#text-input'),
- filterShowAll = $('.showAll'),
- filterShowUnchecked = $('.showUnchecked'),
- filterShowChecked = $('.showChecked'),
- checkAllCheckbox = $('#checkAll');
+  pChecked = $('.showChecked p'),
+  pUnchecked = $('.showUnchecked p'),
+  ulList = $('#list'),
+  paginationButton = $('.pagination'),
+  findItemsButton = $('#find-items'),
+  resetIdButton = $('#resetId'),
+  textInput = $('#text-input'),
+  filterShowAll = $('.showAll'),
+  filterShowUnchecked = $('.showUnchecked'),
+  filterShowChecked = $('.showChecked'),
+  checkAllCheckbox = $('#checkAll');
+
 
 const render = function() {
 
@@ -47,10 +47,8 @@ const render = function() {
   paginationButton.empty();
 
   // check active filter and filter items
-  filteredItems();
-  filterCount = filter[0].length + filter[1].length;
   checkFilter();
-  let pageCount = Math.ceil((items.length - blockedItems() - filterCount)/pageItems);
+  let pageCount = Math.ceil(blockedItems() / pageItems);
 
   if(pageNumber > pageCount && pageCount > 0) {
     pageNumber = pageCount;
@@ -62,8 +60,11 @@ const render = function() {
   currentPage();
 
   const checked = items.length - unchecked === items.length && items.length !== 0;
-  checked ? checkAllCheckbox.prop('checked',true) 
-          :checkAllCheckbox.prop('checked',false);
+  if( checked){
+    checkAllCheckbox.prop('checked',true);
+  } else {
+    checkAllCheckbox.prop('checked',false);
+  }
 };
 const currentPage = function () {
   pageNumberValue = $(`.page-number[value~=${pageNumber}]`);
@@ -81,25 +82,25 @@ const pagination = function(pageCount) {
 // Counter of items (All,checked,unchecked)
 const itemsCounter = function() {
   pAll.empty();
-  let count = items.length - filterCount;
+  let count = items.length;
   pAll.append(`Show All: ${count}`);
-  count = items.length - unchecked - filter[0].length;
+  count = items.length - unchecked;
   pChecked.empty();
   pChecked.append(`Show Checked: ${count}`);
-  count = unchecked - filter[1].length;
+  count = unchecked;
   pUnchecked.empty();
   pUnchecked.append(`Show Unchecked: ${count}`);
 };
 
 const checkFilter = function() {
   if(activeFilter.hasClass('showAll')){
-    filterAll();
+    return 'all';
   }
   else if (activeFilter.hasClass('showChecked')){
-    filterChecked();
+    return 'checked';
   }
   else if (activeFilter.hasClass('showUnchecked')){
-    filterUnchecked();
+    return 'unchecked';
   }
 };
 
@@ -107,17 +108,24 @@ const visibleItems = function () {
   let pages = [];
   let counter = 0;
   let i = (pageNumber-1) * pageItems;
-
-  items.forEach(() => {
-    if(counter === pageItems)return pages;
-  });
-
-    if(!items[i].blocked 
-      && (filter[0].indexOf(items[i].id) ===-1 
-      && filter[1].indexOf(items[i].id)===-1)){
-      counter +=1;
-      pages.push(i);
+  for(i; i < items.length; i++){
+    if(counter === pageItems){
+      return pages;
     }
+
+    if(checkFilter() === 'all'){
+      pages.push(i);
+    } else if(checkFilter() === 'checked'){
+      if(items[i].checked === 'checked'){
+      }
+    } else if (checkFilter() === 'unchecked'){
+      if(items[i].checked !== 'checked') {
+        pages.push(i);
+      }
+    }
+    counter +=1;
+
+  }
   return pages;
 };
 
@@ -141,42 +149,11 @@ const makeToDo = function() {
   ulList.html(ulListAppend);
 };
 
-const filteredItems = function() {
-  filter = [[],[]];
-  let text = findItemsButton.val();
-  if(items.length > 0){
-    for(let i=0;i < items.length;i++){
-      if(items[i].name.indexOf(text) ===-1){
-        items[i].checked === 'checked' ? filter[0].push(items[i].id) : filter[1].push(items[i].id);
-      }
-    }
-  }
-  return true;
-};
-
-
-
-const textFilter = function() {
-  findItemsButton.focus(function() {
-    findItemsButton.keyup(function() {
-      let text = findItemsButton.val();
-      if(inputCheck(text)) filteredItems();
-      render();
-    });
-  });
-  resetIdButton.click(function() {
-    findItemsButton.val('');
-    render();
-  });
-};
-
-
-
 
 const choosePage = function() {
-    $(document).on ("click", `.page-number`, function () {
-      pageNumber = $(this).val();
-      render();
+  $(document).on ("click", `.page-number`, function () {
+    pageNumber = $(this).val();
+    render();
   });
 };
 
@@ -194,14 +171,19 @@ const removeItem = function () {
 };
 
 const blockedItems = function () {
-  let blockedCount = 0;
   if(items.length > 0){
-    items.forEach(item => item.blocked ? blockedCount+=1 : false);
+    if(activeFilter.hasClass('showAll')) {
+      return items.length;
+    } else if(activeFilter.hasClass('showChecked')){
+      return items.length - uncheckedItems();
+    }
+    else if(activeFilter.hasClass('showUnchecked')){
+      return uncheckedItems;
+    }
   }
-  return blockedCount;
 };
 
-// Id generation TRUBLECHANCE
+// Id generation
 const idGener = function() {
   randId += 0.00000000000000000001;
   idList.unshift(randId);
@@ -211,7 +193,9 @@ const idGener = function() {
 const unfocus = function() {
   $('body').on('focusout','.editing',function() {
     if(focusItem !==undefined){
+
       let id = Number(focusItem.parent().attr('id'));
+
       let index = findIndex(idList,id);
       let text = focusItem.text();
       if(inputCheck(text)){
@@ -233,10 +217,11 @@ const clickTwice = function () {
 };
 
 //find ad index of item
-
 const findIndex = function(arr,name) {
   for(let i=0;i<arr.length;i++) {
-    if(Number(arr[i])===name)return i;
+    if(Number(arr[i])===name){
+      return i;
+    }
   }
 };
 
@@ -246,7 +231,6 @@ const addItemProperty = function(name,id=idGener()) {
     name: name,
     id: id,
     checked: '',
-    blocked: false,
     editing: false
   });
 };
@@ -276,29 +260,32 @@ const addItem = function() {
     // Enter pressed
     if (keycode === 13) {
       let text = textInput.val();
-        createItem(text);
-      }
+
+      // If input not empty
+      createItem(text);
+    }
   });
 };
 
 const deleteChecked = function() {
   $(document)
     .on('click', '#deleteId', () => {
-        if(!uncheckedItems())
-        {
-          items = []; idList = [];
-          pageNumber = 1;
-          render();
-          return 0;
-        }
-        let arr = []; idList = [];
-        items.forEach((item,i) => {if(item.checked !== 'checked'){
-          arr.push(item);
-          idList.push(item.id);
-        }});
-        items = arr;
+      if(!uncheckedItems())
+      {
+        items = []; idList = [];
+        pageNumber = 1;
         render();
-      });
+        return 0;
+      }
+
+      let arr = [];idList = [];
+      items.forEach((item,i) => {if(item.checked !== 'checked'){
+        arr.push(item);
+        idList.push(item.id);
+      }});
+      items = arr;
+      render();
+    });
 };
 
 // Check all items, or uncheck all items
@@ -320,67 +307,41 @@ const checkAllItems = function () {
 let checkItem = function () {
   $('body')
     .on('click','.check-item', function() {
-        let id = Number($(this).parent().attr('id'));
-        let index = findIndex(idList, id);
-        if (items[index].checked === 'checked') {
-          items[index].checked = '';
-        } else {
-          items[index].checked = 'checked';
-        }
-        render();
+      let id = Number($(this).parent().attr('id'));
+      let index = findIndex(idList, id);
+      if (items[index].checked === 'checked') {
+        items[index].checked = '';
+      } else {
+        items[index].checked = 'checked';
+      }
+      render();
     });
 };
 
 const changeFilter = function(newFilter) {
-  activeFilter.removeClass('active-filter');
-  activeFilter = newFilter;
-  activeFilter.addClass('active-filter');
-};
-
-const filterAll = function (){
-    items.forEach( item => {
-      item.blocked 
-      ? (item.blocked = false, $(`#${item.id}`).removeClass('blocked')) 
-      : true
-    });
-};
-const filterUnchecked = function (){
-    items.forEach( item => {
-      item.checked 
-      ? (item.blocked = true, $(`#${item.id}`).addClass('blocked')) 
-      : (item.blocked = false, $(`#${item.id}`).removeClass('blocked'))
-    });
-};
-const filterChecked = function (){
-    items.forEach( item => {
-      !item.checked 
-      ? (item.blocked = true, $(`#${item.id}`).addClass('blocked')) 
-      : (item.blocked = false, $(`#${item.id}`).removeClass('blocked'))
-    });
+  if(activeFilter !== undefined){
+    activeFilter.removeClass('active-filter');
+    activeFilter = newFilter;
+    activeFilter.addClass('active-filter');
+  }
 };
 
 const chooseFilter = function () {
 
   // filter All
   $('body').on('click', '.filter', function() {
-      if($(this).attr('id') === 'show-all'){
-        filterAll();
-        changeFilter(filterShowAll);
+    if($(this).attr('id') === 'show-all'){
+      changeFilter(filterShowAll);
 
+    } else if ($(this).attr('id') === 'show-checked') {
+      changeFilter(filterShowChecked);
 
-      } else if ($(this).attr('id') === 'show-checked') {
-        filterChecked();
-        changeFilter(filterShowChecked);
-
-
-      } else if ($(this).attr('id') === 'show-unchecked'){
-        filterUnchecked();
-        changeFilter(filterShowUnchecked);
-
-      }
-      render();
+    } else if ($(this).attr('id') === 'show-unchecked'){
+      changeFilter(filterShowUnchecked);
+    }
+    render();
   });
-}
+};
 const uncheckedItems = function() {
   let unchecked = false;
 
@@ -392,8 +353,8 @@ const uncheckedItems = function() {
 // add check/uncheck elements
 const checkAll = function (check) {
   check ? items.forEach(item => item.checked = 'checked')
-        : items.forEach(item => item.checked = '')
-  };
+    : items.forEach(item => item.checked = '')
+};
 
 const inputCheck = function(text) {
   if (text    .replace(/^\s*/, '').replace(/\s*$/, '') !== '') {
@@ -403,7 +364,6 @@ const inputCheck = function(text) {
 };
 
 chooseFilter();
-textFilter();
 unfocus();
 clickTwice();
 deleteChecked();

@@ -190,10 +190,6 @@ li p {
     align-items: center;
 }
 
-.blocked {
-    display: none;
-}
-
 .filters div {
     display: flex;
     justify-content: center;
@@ -241,5 +237,5 @@ li p {
 .check-item {
     margin: 0 1em;
     cursor: pointer;
-    
+
 }
