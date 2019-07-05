@@ -1,8 +1,6 @@
 "use strict";
 
-let items = [],
-
-  idList = [],
+let items = [], idList = [],
 
   randId = 0.00000000000000000001 ,
   pageNumber = 1,
@@ -42,6 +40,7 @@ const render = function() {
   //clear pagination
   paginationButton.empty();
 
+  console.log(blockedItems());
   let pageCount = Math.ceil(blockedItems() / pageItems);
 
   if(pageNumber > pageCount && pageCount > 0) {
@@ -87,6 +86,25 @@ const itemsCounter = function() {
   pUnchecked.append(`Show Unchecked: ${count}`);
 };
 
+const filterValues = () => {
+
+  if(activeFilter.hasClass('showAll')) {
+    return items.map( (item,i) => i);
+  }
+  if(activeFilter.hasClass('showChecked')) {
+    return items.filter(item =>
+      item.checked === 'checked');
+  }
+  if(activeFilter.hasClass('showAll')) {
+    return items.filter(item =>
+      item.checked !== 'checked');
+  }
+  if(activeFilter.hasClass('showChecked'))
+    return numbers.filter(number =>
+      item.checked !== 'checked');
+};
+
+
 const visibleItems = function () {
   let pages = [];
   let counter = 0;
@@ -108,7 +126,6 @@ const visibleItems = function () {
       }
     }
     counter +=1;
-
   }
   return pages;
 };
