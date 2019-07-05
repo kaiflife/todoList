@@ -54,11 +54,12 @@ const render = function() {
   currentPage();
 
   const checked = items.length - unchecked === items.length && items.length !== 0;
-  if( checked){
+  if(checked){
     checkAllCheckbox.prop('checked',true);
   } else {
     checkAllCheckbox.prop('checked',false);
   }
+
 };
 const currentPage = function () {
   pageNumberValue = $(`.page-number[value~=${pageNumber}]`);
@@ -98,11 +99,11 @@ const visibleItems = function () {
     if(activeFilter.hasClass('showAll')){
       pages.push(i);
     } else if(activeFilter.hasClass('showChecked')){
-      if(items[i].checked === 'checked'){
+      if(items[i].checked){
         pages.push(i);
       }
     } else if (activeFilter.hasClass('showUnchecked')){
-      if(items[i].checked !== 'checked') {
+      if(!items[i].checked) {
         pages.push(i);
       }
     }
@@ -122,7 +123,7 @@ const makeToDo = function() {
   for(let i = 0 ; i < pages.length; i++){
     name = items[pages[i]].name;
     id = items[pages[i]].id;
-    checked = items[pages[i]].checked;
+    items[pages[i]].checked ? checked = 'checked' : checked='';
     editing = items[pages[i]].editing;
     ulListAppend += `<li id=${id}  class="${checked + ' item'}">
     <input type="checkbox" id="checkItem" class="check-item"  ${checked+'='}><p contenteditable=${editing} class="editing">${name}</p>   <a href='#'
@@ -213,7 +214,7 @@ const addItemProperty = function(name,id=idGener()) {
   items.unshift({
     name: name,
     id: id,
-    checked: '',
+    checked: false,
     editing: false
   });
 };
@@ -262,7 +263,7 @@ const deleteChecked = function() {
       }
 
       let arr = [];idList = [];
-      items.forEach((item,i) => {if(item.checked !== 'checked'){
+      items.forEach((item,i) => {if(!item.checked){
         arr.push(item);
         idList.push(item.id);
       }});
@@ -292,10 +293,10 @@ let checkItem = function () {
     .on('click','.check-item', function() {
       let id = Number($(this).parent().attr('id'));
       let index = findIndex(idList, id);
-      if (items[index].checked === 'checked') {
-        items[index].checked = '';
+      if (items[index].checked) {
+        items[index].checked = false;
       } else {
-        items[index].checked = 'checked';
+        items[index].checked = true;
       }
       render();
     });
@@ -328,15 +329,15 @@ const chooseFilter = function () {
 const uncheckedItems = function() {
   let unchecked = false;
 
-  items.forEach(item => {if(item.checked !== 'checked')unchecked+=1;});
+  items.forEach(item => {if(!item.checked)unchecked+=1;});
 
   return unchecked; // true if have unchecked, false if everybody is checked
 };
 
 // add check/uncheck elements
 const checkAll = function (check) {
-  check ? items.forEach(item => item.checked = 'checked')
-    : items.forEach(item => item.checked = '')
+  check ? items.forEach(item => item.checked = true)
+    : items.forEach(item => item.checked = false)
 };
 
 const inputCheck = function(text) {

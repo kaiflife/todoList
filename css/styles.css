@@ -6,7 +6,7 @@
 /* Remove margins and padding from the list */
 ul {
     margin: 0;
-    padding: 0;
+    padding: 0 2em;
 }
 
 /* Style the list items */
@@ -169,6 +169,7 @@ label {
 }
 
 li p {
+    overflow-x:hidden;
     margin: 1em 0;
 }
 
@@ -228,6 +229,7 @@ li p {
     padding: 0.5em;
     color: white;
     width: 100%;
+    max-height: 68px;
 }
 
 .currentPage {
