@@ -143,13 +143,13 @@ const makeToDo = function() {
     pages[i].checked ? checked = 'checked' : checked='';
     editing = pages[i].editing;
     ulListAppend += `<li id=${id}  class="${checked + ' item'}">
-    <input type="checkbox" id="checkItem" class="check-item"  ${checked+'='}><p contenteditable=${editing} class="editing">${name}</p>   <a href='#'
+    <input type="checkbox" id="checkItem" class="check-item"  ${checked+'='}><p contenteditable=${editing}
+     class="editing">${name}</p>   <a href='#'
       + class='close' aria-hidden='true'>&times;</a>
 </li>`;
   }
   ulList.html(ulListAppend);
 };
-
 
 const choosePage = function() {
   $(document).on ("click", `.page-number`, function () {
@@ -166,11 +166,11 @@ const removeItem = function () {
       let index = idList.indexOf(id);
       idList.splice(index,1); // remove id
       items.splice(index,1);// remove 1 element in array
-
       render();
     });
 };
 
+// items that was blocked
 const blockedItems = function () {
   if(items.length > 0){
     if(activeFilter.hasClass('showAll')) {
@@ -191,14 +191,13 @@ const idGener = function() {
   return randId;
 };
 
+// check for unfocus in <body>
 const unfocus = function() {
   $('body').on('focusout','.editing',function() {
     if(focusItem !==undefined){
 
       let id = Number(focusItem.parent().attr('id'));
-
       let index = idList.indexOf(id);
-
       let text = focusItem.text();
       if(inputCheck(text)){
         items[index].name = focusItem.text();

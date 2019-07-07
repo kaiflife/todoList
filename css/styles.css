@@ -11,12 +11,15 @@ ul {
 
 /* Style the list items */
 ul li {
-    cursor: pointer;
     position: relative;
     font-size: 18px;
     transition: 0.2s;
     align-items: center;
     display: flex;
+}
+
+li p {
+    cursor: pointer;
 }
 
 /* When clicked on, add a background color and strike out text */
@@ -61,7 +64,6 @@ ul li.checked p {
     border: none;
     border-radius: 0;
     width: 75%;
-    padding: 10px;
     float: left;
     font-size: 16px;
 }
@@ -92,10 +94,13 @@ ul li.checked p {
     border-radius: 2em;
     cursor: pointer;
     background: darkgray;
-    padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.checkAll label {
+    cursor: pointer;
 }
 
 .button-add:hover {
@@ -239,5 +244,21 @@ li p {
 .check-item {
     margin: 0 1em;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2em;
+    width: 2em;
+    background: #fff;
 
+}
+
+.filter p {
+    cursor: pointer;
+}
+
+.test-item {
+    background: black;
+    height: 1em;
+    width: 1em;
 }
