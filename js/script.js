@@ -4,8 +4,8 @@ let items = [], idList = [],
 
   randId = 0.00000000000000000001 ,
   pageNumber = 1,
-  pageItems = 5, // Items on one page
-  activeFilter = $('.showAll'), // (showAll,ShowChecked,ShowUnchecked)
+  pageItems = 5,
+  activeFilter = $('.showAll'),
   focusItem,
   unchecked,
   pageNumberValue;
@@ -19,7 +19,8 @@ const pAll = $('.showAll p'),
   filterShowAll = $('.showAll'),
   filterShowUnchecked = $('.showUnchecked'),
   filterShowChecked = $('.showChecked'),
-  checkAllCheckbox = $('#checkAll');
+  checkAllCheckbox = $('#checkAll'),
+  codeEnterButton = 13;
 
 const render = function() {
 
@@ -31,13 +32,10 @@ const render = function() {
 
   if(pageItems <= 0) pageNumber=1;
 
-  //clear ul
   ulList.empty();
 
-  //clear input
   textInput.val('');
 
-  //clear pagination
   paginationButton.empty();
 
   let pageCount = Math.ceil(blockedItems() / pageItems);
@@ -55,11 +53,7 @@ const render = function() {
   itemsCounter();
 
   const checked = items.length - unchecked === items.length && items.length !== 0;
-  if(checked){
-    checkAllCheckbox.prop('checked',true);
-  } else {
-    checkAllCheckbox.prop('checked',false);
-  }
+  checkAllCheckbox.prop('checked',checked);
 
 };
 const currentPage = function () {
@@ -75,7 +69,6 @@ const pagination = function(pageCount) {
   paginationButton.html(buttonAppend);
 };
 
-// Counter of items (All,checked,unchecked)
 const itemsCounter = function() {
   pAll.empty();
   let count = items.length;
@@ -114,7 +107,7 @@ const filterValues = () => {
 
 
 const visibleItems = function () {
-    let pages = filterValues(); // index of items checked/unchecked [0,3,5] etc
+    let pages = filterValues();
     let renderItems = [];
     let counter = 0;
     let i = (pageNumber-1)*pageItems;
@@ -158,19 +151,17 @@ const choosePage = function() {
   });
 };
 
-// if click on cross , remove element from toDo List
 const removeItem = function () {
   $('body')
     .on('click', '#list .close', function() {
       let id = Number($(this).parent().attr('id'));
       let index = idList.indexOf(id);
-      idList.splice(index,1); // remove id
-      items.splice(index,1);// remove 1 element in array
+      idList.splice(index,1);
+      items.splice(index,1);
       render();
     });
 };
 
-// items that was blocked
 const blockedItems = function () {
   if(items.length > 0){
     if(activeFilter.hasClass('showAll')) {
@@ -184,14 +175,12 @@ const blockedItems = function () {
   }
 };
 
-// Id generation
 const idGener = function() {
   randId += 0.00000000000000000001;
   idList.unshift(randId);
   return randId;
 };
 
-// check for unfocus in <body>
 const unfocus = function() {
   $('body').on('focusout','.editing',function() {
     if(focusItem !==undefined){
@@ -208,7 +197,6 @@ const unfocus = function() {
   });
 };
 
-//dbl click dosnt work
 const clickTwice = function () {
   $('body').on('dblclick', '.editing', function () {
     $(this).attr('contenteditable', 'true');
@@ -217,8 +205,6 @@ const clickTwice = function () {
   });
 };
 
-
-// add properties to array
 const addItemProperty = function(name,id=idGener()) {
   items.unshift({
     name: name,
@@ -236,25 +222,20 @@ const createItem = function(text) {
   }
 };
 
-// Add items to array
 const addItem = function() {
 
-  // append item when click button-add
   $(document)
     .on('click', '.button-add', () => {
       let text = textInput.val();
       createItem(text);
     });
 
-  //  Append item with ENTER button
   $(document).keypress(event => {
     const keycode = event.keyCode ? event.keyCode : event.which;
 
-    // Enter pressed
-    if (keycode === 13) {
+    if (keycode === codeEnterButton) {
       let text = textInput.val();
 
-      // If input not empty
       createItem(text);
     }
   });
@@ -281,7 +262,6 @@ const deleteChecked = function() {
     });
 };
 
-// Check all items, or uncheck all items
 const checkAllItems = function () {
   $(document)
     .on('click', '#checkAll', () => {
@@ -296,18 +276,13 @@ const checkAllItems = function () {
     });
 };
 
-//check one item
 let checkItem = function () {
   $('body')
     .on('click','.check-item', function() {
       let id = Number($(this).parent().attr('id'));
       let index = idList.indexOf(id);
 
-      if (items[index].checked) {
-        items[index].checked = false;
-      } else {
-        items[index].checked = true;
-      }
+      items[index].checked = !items[index].checked;
       render();
     });
 };
@@ -322,7 +297,6 @@ const changeFilter = function(newFilter) {
 
 const chooseFilter = function () {
 
-  // filter All
   $('body').on('click', '.filter', function() {
     if($(this).attr('id') === 'show-all'){
       changeFilter(filterShowAll);
@@ -341,10 +315,9 @@ const uncheckedItems = function() {
 
   items.forEach(item => {if(!item.checked)unchecked+=1;});
 
-  return unchecked; // true if have unchecked, false if everybody is checked
+  return unchecked;
 };
 
-// add check/uncheck elements
 const checkAll = function (check) {
   check ? items.forEach(item => item.checked = true)
     : items.forEach(item => item.checked = false)
