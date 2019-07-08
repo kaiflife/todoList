@@ -41,7 +41,7 @@ let eachElement = function () {
                return false;
         }
     });
-}
+};
 
 // add or remove class to element
 let checkAll = function (check) {

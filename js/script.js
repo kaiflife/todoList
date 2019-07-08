@@ -210,7 +210,7 @@ const unfocus = function() {
 
 //dbl click dosnt work
 const clickTwice = function () {
-  $('body').on('click', '.editing', function () {
+  $('body').on('dblclick', '.editing', function () {
     $(this).attr('contenteditable', 'true');
     $(this).focus();
     focusItem = $(this);
